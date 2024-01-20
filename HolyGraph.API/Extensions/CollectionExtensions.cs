@@ -1,4 +1,3 @@
-
 namespace HolyGraph.API.Extensions;
 
 public static class CollectionExtensions

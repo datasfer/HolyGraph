@@ -1,5 +1,3 @@
-
-
 using HolyGraph.API.Configs;
 using HolyGraph.API.Extensions;
 using HolyGraph.API.Interfaces;
@@ -26,13 +24,12 @@ namespace HolyGraph.API.Services;
         var jsonResult = await GetResultAsync(query);
         return JsonConvert.SerializeObject(jsonResult);
      }
-
    
      private async Task<IEnumerable<IDictionary<string, object>>> GetResultAsync(string query)
      {
             using var dbSession = StartSession();
             var cursor = await dbSession.RunAsync(query);
-          
+
             var result = new List<IDictionary<string, object>>();
 
             while (await cursor.FetchAsync())
