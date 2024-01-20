@@ -1,0 +1,57 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.IO.Compression;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace HolyGraph.API.Extensions
+{
+    public static class StringExtensions
+    {
+        public static byte[] Compress(this string body)
+        {
+            if (string.IsNullOrWhiteSpace(body))
+            {
+                return new byte[0];
+            }
+
+            byte[] data = body.AsUTF8Bytes();
+
+            byte[] zippedBytes;
+
+            using (MemoryStream outputStream = new MemoryStream())
+            {
+                using (GZipStream gZipStream = new GZipStream(outputStream, CompressionMode.Compress, false))
+                {
+                    gZipStream.Write(data, 0, data.Length);
+
+                    gZipStream.Flush();
+
+                    outputStream.Flush();
+                    zippedBytes = outputStream.ToArray();
+                }
+            }
+
+            return zippedBytes;
+        }
+
+        public static byte[] AsUTF8Bytes(this string text)
+        {
+            return Encoding.UTF8.GetBytes(text ?? string.Empty);
+        }
+
+        public static string JoinWith(this IEnumerable<string> strings,
+            char separator)
+            => string.Join(separator, strings);
+
+        public static string JoinWith(this IReadOnlyList<string> strings,
+            char separator)
+            => string.Join(separator, strings);
+
+        public static string ToPascalCase(this string literal)
+            => literal?.Length > 0 ? $"{char.ToLowerInvariant(literal[0])}{literal.Substring(1)}" : null;
+
+    }
+}

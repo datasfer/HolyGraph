@@ -1,4 +1,4 @@
-@HolyGraph.API_HostAddress = http://localhost:5062
+@HolyGraph.API_HostAddress = http://localhost:5146
 
 GET {{HolyGraph.API_HostAddress}}/weatherforecast/
 Accept: application/json
