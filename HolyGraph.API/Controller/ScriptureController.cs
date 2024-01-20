@@ -8,11 +8,11 @@ using Newtonsoft.Json;
 
 namespace HolyGraph.API.Controllers
 {
-    public class Neo4jController : BaseApiController
+    public class ScriptureController : BaseApiController
     {
         private readonly IDriver _driver;
 
-        public Neo4jController()
+        public ScriptureController()
         {
             //_driver = GraphDatabase.Driver("bolt://localhost:7687", AuthTokens.Basic("neo4j", "neo"));
             _driver = GraphDatabase.Driver("bolt://195.201.22.161:7687", AuthTokens.Basic("neo4j", "neo"));
@@ -127,7 +127,7 @@ public async Task<IActionResult> getBook(string book)
     return await QueryAndReturnJsonAsync(query);
 }
 
-[HttpGet("translation/{translation}/books/{book}")]
+[HttpGet("translations/{translation}/books/{book}")]
 public async Task<IActionResult> getBook(string translation, string book)
 {
     var query = $@"MATCH(t:Translation) where t.id = '{translation}' 
