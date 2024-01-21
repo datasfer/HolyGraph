@@ -1,0 +1,47 @@
+
+* API
+swagger description notes, how use xml comments to feed swagger description
+https://stackoverflow.com/questions/52883466/how-to-add-method-description-in-swagger-ui-in-webapi-application
+https://github.com/domaindrivendev/Swashbuckle.AspNetCore?tab=readme-ov-file#include-descriptions-from-xml-comments
+
+* some Query from telegram bot
+
+
+** @surbgirqbot Mat 1 - 
+/// Verse range
+[HttpGet("{translation}/books/{book}/chapters/{chapter}/verses/{v1}/")]
+
+ -----------------------------------
+ Request: Verse Range enter
+ URL: scripture/kjv-T/books/Matthew/chapters/1/verses/1? to=50
+ MATCH(t:Translation) where t.id = 'kjv-T'
+ MATCH(t)-[rt:CONTAINS]->(n:Book) where n.book = 'Matthew'
+ match (n)<-[r:CONTAINS]->(ch:Chapter)-[:CONTAINS]->(v:Verse)
+ where ch.num = 1 and v.verse >= 1 and v.verse <= 50
+ return v, t.id as translation, n.title as bookTitle order by v.verseOrder
+
+** @surbgirqbot Mat 1 4
+/// Verse range
+[HttpGet("{translation}/books/{book}/chapters/{chapter}/verses/{v1}/")]
+
+-----------------------------------
+Request: Verse Range enter
+URL: scripture/kjv-T/books/Matthew/chapters/1/verses/1? to=50
+MATCH(t:Translation) where t.id = 'kjv-T'
+MATCH(t)-[rt:CONTAINS]->(n:Book) where n.book = 'Matthew'
+match (n)<-[r:CONTAINS]->(ch:Chapter)-[:CONTAINS]->(v:Verse)
+where ch.num = 1 and v.verse = 4
+return v, t.id as translation, n.title as bookTitle order by v.verseOrder
+
+** @surbgirqbot Mat 1 4-10
+/// Verse range
+[HttpGet("{translation}/books/{book}/chapters/{chapter}/verses/{v1}/")]
+
+-----------------------------------
+Request: Verse Range enter
+URL: scripture/kjv-T/books/Matthew/chapters/1/verses/4? to=10
+MATCH(t:Translation) where t.id = 'kjv-T'
+MATCH(t)-[rt:CONTAINS]->(n:Book) where n.book = 'Matthew'
+match (n)<-[r:CONTAINS]->(ch:Chapter)-[:CONTAINS]->(v:Verse)
+where ch.num = 1 and v.verse >= 4 and v.verse <= 10
+return v, t.id as translation, n.title as bookTitle order by v.verseOrder

@@ -9,12 +9,12 @@ using Newtonsoft.Json;
 
 namespace HolyGraph.API.Controllers;
 
-public class VerseController : BaseApiController
+public class VersesController : BaseApiController
 {
     private readonly INeo4jGraphRepository _grapthRepository;
-    private readonly ILogger<VerseController> _logger;
+    private readonly ILogger<VersesController> _logger;
 
-    public VerseController(INeo4jGraphRepository grapthRepository, ILogger<VerseController> logger)
+    public VersesController(INeo4jGraphRepository grapthRepository, ILogger<VersesController> logger)
     {
         _grapthRepository = grapthRepository;     
         _logger = logger;           

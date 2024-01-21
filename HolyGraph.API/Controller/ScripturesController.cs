@@ -9,12 +9,12 @@ using Newtonsoft.Json;
 
 namespace HolyGraph.API.Controllers;
 
-public class ScriptureController : BaseApiController
+public class ScripturesController : BaseApiController
 {
     private readonly INeo4jGraphRepository _grapthRepository;
-    private readonly ILogger<ScriptureController> _logger;
+    private readonly ILogger<ScripturesController> _logger;
 
-    public ScriptureController(INeo4jGraphRepository grapthRepository, ILogger<ScriptureController> logger)
+    public ScripturesController(INeo4jGraphRepository grapthRepository, ILogger<ScripturesController> logger)
     {
         _grapthRepository = grapthRepository;
         _logger = logger;
@@ -27,15 +27,15 @@ public class ScriptureController : BaseApiController
     /// </summary>
     /// <param name="translation"></param>
     /// <param name="girq"></param>
-    /// <param name="ch_num"></param>
+    /// <param name="num"></param>
     /// <returns></returns>
-    [HttpGet("book/verses/count")]
-    public async Task<IActionResult> getBookChapterVerses(string translation, string book, int ch_num)
+    [HttpGet("{translation}/books/{book}/chapters/{num}/verses/count")]
+    public async Task<IActionResult> getBookChapterVerses(string translation, string book, int num)
     {
         var query =
         $"MATCH(t:Translation) where t.id = '{translation}' " +
         $"match (b:Book {{book: '{book}' }})-[:CONTAINS]-()-[*]->(v:Verse) " +
-        $"WHERE v.chapter={ch_num} " +
+        $"WHERE v.chapter={num} " +
         $"return Max(v.verse) as num";
 
         return await QueryAndReturnJsonAsync(query);
@@ -46,22 +46,30 @@ public class ScriptureController : BaseApiController
     /// </summary>
     /// <param name="book"></param>
     /// <returns></returns>
-    [HttpGet("book/chapters/count")]
+    [HttpGet("{translation}/books/{book}/chapters/count")]
     public async Task<IActionResult> getBookChaptersCount(string translation, string book)
     {
         var query =
             $"MATCH(t:Translation) where t.id = '{translation}' " +
             $"match (b:Book {{book: '{book}' }})-->(v:Chapter) " +
-            $"return b.bookOrder as order, b.title, b.chapters as chapterNum, b.book;";
+            $"return b.bookOrder as order, b.title, b.chapters as chapterNum, b.book order by b.bookOrder;";
         return await QueryAndReturnJsonAsync(query);
     }
+
+
 
     #endregion
 
     #region book
+
+    /// <summary>
+    /// Get scriptures
+    /// </summary>
+    /// <param name="scripture">All, Bible, Narek</param>
+    /// <returns></returns>
     // curl -X GET "http://195.201.22.161:33010/Scripture/books" -H "accept: */*"
     // curl -X GET "http://localhost:33010/Scripture/books" -H "accept: */*"
-    [HttpGet("scriptures")]
+    [HttpGet]
     public async Task<IActionResult> getScriptures(string scripture = "All")
     {
         string where = string.Empty;
@@ -99,6 +107,33 @@ public class ScriptureController : BaseApiController
         return await QueryAndReturnJsonAsync(query);
     }
 
+    [HttpGet("books/{book}/chapters")]
+    public async Task<IActionResult> getBookChapters(string book)
+    {
+        var query =
+            $@"
+            MATCH (n:Book) where n.book ='{book}'
+            MATCH(n)-[r:CONTAINS]->(c:Chapter)
+            MATCH(n)<--(t:Translation)
+            RETURN n, t.id as translation, c.num as chapter order by c.num;
+            ";
+        return await QueryAndReturnJsonAsync(query);
+    }
+
+
+    [HttpGet("{translation}/books/{book}/chapters")]
+    public async Task<IActionResult> getBookChapters(string translation, string book)
+    {
+        var query =
+            $@"
+            MATCH(t:Translation) where t.id = '{translation}' 
+            MATCH(t)-->(n:Book) where n.book ='{book}'
+            MATCH(n)-[r:CONTAINS]->(c:Chapter)
+            RETURN n,n.chapters,t.id,   c.book, c.num order by c.num;            ";
+        return await QueryAndReturnJsonAsync(query);
+    }
+
+
     [HttpGet("bibles")]
     public async Task<IActionResult> getBibles(string translation)
     {
@@ -130,7 +165,7 @@ public class ScriptureController : BaseApiController
         return await QueryAndReturnJsonAsync(query);
     }
 
-    [HttpGet("translations/{translation}/books/{book}")]
+    [HttpGet("{translation}/books/{book}")]
     public async Task<IActionResult> getBook(string translation, string book)
     {
         var query = $@"MATCH(t:Translation) where t.id = '{translation}' 
