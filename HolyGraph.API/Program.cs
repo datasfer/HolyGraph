@@ -20,8 +20,8 @@ builder.Services.AddSwaggerGen(c =>
         }
      );
 
-     var filePath = Path.Combine(System.AppContext.BaseDirectory, "HolyGraph.API.xml");
-     c.IncludeXmlComments(filePath);
+    var filePath = Path.Combine(System.AppContext.BaseDirectory, "HolyGraph.API.xml");
+    c.IncludeXmlComments(filePath);
 });
 
 builder.Services.AddApplicationServices(builder.Configuration);

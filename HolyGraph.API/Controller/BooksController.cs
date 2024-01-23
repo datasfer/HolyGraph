@@ -3,11 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HolyGraph.API;
 
-public class BookController : BaseApiController
+public class BooksController : BaseApiController
 {
     private readonly IBookRepository _bookRepository;
 
-    public BookController(IBookRepository bookRepository)
+    public BooksController(IBookRepository bookRepository)
     {
         _bookRepository = bookRepository;
     }
@@ -26,11 +26,11 @@ public class BookController : BaseApiController
     public async Task<ActionResult<IEnumerable<BookDto>>> getScriptures([FromQuery] BookParams bookParams)
     {
         var bs = await _bookRepository.GetBooksAsync(bookParams);
-        Response.AddPaginationHeader(new PaginationHeader(bs.CurrentPage, bs.PageSize,
-            bs.TotalCount, bs.TotalPages));
+
+        Console.WriteLine(bookParams);
+        Response.AddPaginationHeader(new PaginationHeader(bs.CurrentPage, bs.PageSize, bs.TotalCount, bs.TotalPages));
 
         return Ok(bs);
     }
-
 
 }

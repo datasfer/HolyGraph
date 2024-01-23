@@ -6,4 +6,5 @@ export interface Book {
     labels : string,
     testament : string,
     title : string,
+    translationId : string
 }

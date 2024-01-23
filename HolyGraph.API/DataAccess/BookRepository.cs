@@ -29,13 +29,14 @@ public class BookRepository : IBookRepository
 
         var query =
             @"
-            MATCH (b:Book) return b 
+            MATCH(b:Book)
+            MATCH(t:Translation)<-[r:CONTAINS]->(b)
+            RETURN b,t.id as translationId 
             <skip> 
             <limit>;
             ";
 
         var skip = (bookParams.PageNumber - 1) * bookParams.PageSize;
-        var limit = 1;
 
         query = query.Replace("<skip>",  $"SKIP  {skip}");
         query = query.Replace("<limit>", $"LIMIT {bookParams.PageSize}");
@@ -45,7 +46,7 @@ public class BookRepository : IBookRepository
         // var jsonResult = await _grapthRepository.RunQueryAsync(query);
         // return Content(jsonResult, "application/json");
 
-        var pagedList = new PagedList<BookDto>(books, 100, bookParams.PageNumber, bookParams.PageSize);
+        var pagedList = new PagedList<BookDto>(books, 164, bookParams.PageNumber, bookParams.PageSize);
 
         return pagedList;
     }

@@ -18,9 +18,10 @@ export function getPaginatedResult<T>(url: string, params: HttpParams, http: Htt
     );
   }
 
-  export function getPaginationHeaders(pageNumber: number, pageSize: number) {
+  export function getPaginationHeaders(scripture: string, pageNumber: number, pageSize: number) {
     let params = new HttpParams();
 
+    params = params.append('scripture', scripture);
     params = params.append('pageNumber', pageNumber);
     params = params.append('pageSize', pageSize);
 

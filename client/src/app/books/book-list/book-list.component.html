@@ -1,9 +1,26 @@
 <div class="text-center mt-3">
     <h2>Books - {{pagination?.totalItems}} found</h2>
     <ul>
-        <li *ngFor="let book of books">{{book.book}} - {{book.title}}</li>
+        <li *ngFor="let book of books">{{book.translationId}} | {{book.bookOrder}} | {{book.book}} - {{book.title}}</li>
     </ul>
+
+    <div class="d-flex justify-content-center" *ngIf="pagination">
+        <pagination 
+            [boundaryLinks]="true" 
+            [totalItems]="pagination.totalItems"
+            [itemsPerPage]="pagination.itemsPerPage"
+            [(ngModel)]="pagination.currentPage"
+            (pageChanged)="pageChanged($event)"
+            [maxSize]="10"
+            previousText="&lsaquo;" 
+            nextText="&rsaquo;" 
+            firstText="&laquo;"
+            lastText="&raquo;">
+    </pagination>
+    </div>
+
 </div>
+
 
 
 
