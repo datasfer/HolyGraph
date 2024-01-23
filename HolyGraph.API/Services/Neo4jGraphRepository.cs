@@ -24,6 +24,13 @@ namespace HolyGraph.API.Services;
         var jsonResult = await GetResultAsync(query);
         return JsonConvert.SerializeObject(jsonResult);
      }
+
+     public async Task<IEnumerable<T>> RunQueryAsync<T>(string query)
+     {
+        var jsonResult = await GetResultAsync(query);
+        var jsonify = JsonConvert.SerializeObject(jsonResult);
+        return JsonConvert.DeserializeObject<IEnumerable<T>>(jsonify);
+     }
    
      private async Task<IEnumerable<IDictionary<string, object>>> GetResultAsync(string query)
      {

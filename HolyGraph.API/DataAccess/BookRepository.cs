@@ -1,0 +1,52 @@
+﻿
+using HolyGraph.API.Interfaces;
+
+namespace HolyGraph.API;
+
+public class BookRepository : IBookRepository
+{
+    private readonly INeo4jGraphRepository _neoGraph;
+
+    public BookRepository(INeo4jGraphRepository neoGraph)
+    {
+        _neoGraph = neoGraph;
+    }   
+    public Task<BookDto> GetBookAsync(string username)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<PagedList<BookDto>> GetBooksAsync(BookParams bookParams)
+    {
+        Console.WriteLine("-----------------------------------");
+        Console.WriteLine("Request: Book -> getScriptures");
+        
+        string where = string.Empty;
+        if (bookParams.Scripture != ScriptureEnum.All)
+        {
+            where = $"WHERE b.Label = '{bookParams.Scripture}";
+        }
+
+        var query =
+            @"
+            MATCH (b:Book) return b 
+            <skip> 
+            <limit>;
+            ";
+
+        var skip = (bookParams.PageNumber - 1) * bookParams.PageSize;
+        var limit = 1;
+
+        query = query.Replace("<skip>",  $"SKIP  {skip}");
+        query = query.Replace("<limit>", $"LIMIT {bookParams.PageSize}");
+
+        var books = await _neoGraph.RunQueryAsync<BookDto>(query);
+
+        // var jsonResult = await _grapthRepository.RunQueryAsync(query);
+        // return Content(jsonResult, "application/json");
+
+        var pagedList = new PagedList<BookDto>(books, 100, bookParams.PageNumber, bookParams.PageSize);
+
+        return pagedList;
+    }
+}

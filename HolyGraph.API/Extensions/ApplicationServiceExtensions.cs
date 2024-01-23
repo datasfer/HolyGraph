@@ -20,6 +20,7 @@ public static class ApplicationServiceExtensions
         services.AddSingleton(GraphDatabase.Driver(neo4jConfig.InstanceUri, AuthTokens.Basic(neo4jConfig.UserName, neo4jConfig.Password)));
 
         services.AddSingleton<INeo4jGraphRepository, Neo4jGraphRepository>();
+        services.AddSingleton<IBookRepository, BookRepository>();
    
         services.AddDbContext<DataContext>(opt =>
         {

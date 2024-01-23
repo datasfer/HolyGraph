@@ -66,11 +66,13 @@ public class ScripturesController : BaseApiController
     /// Get scriptures
     /// </summary>
     /// <param name="scripture">All, Bible, Narek</param>
+    /// <param name="pageNumber"></param>
+    /// <param name="pageSize"></param>
     /// <returns></returns>
     // curl -X GET "http://195.201.22.161:33010/Scripture/books" -H "accept: */*"
     // curl -X GET "http://localhost:33010/Scripture/books" -H "accept: */*"
     [HttpGet]
-    public async Task<IActionResult> getScriptures(string scripture = "All")
+    public async Task<IActionResult> getScriptures(int pageNumber, int pageSize, string scripture = "All")
     {
         string where = string.Empty;
         if (!scripture.Equals("All", StringComparison.OrdinalIgnoreCase))
@@ -80,8 +82,26 @@ public class ScripturesController : BaseApiController
 
         var query =
             @"
-        MATCH (b:Book) return b;
-        ";
+            MATCH (b:Book) return b 
+            <skip> 
+            <limit>;
+            ";
+
+        var totalCount = 1;
+        var totalPages = 1;
+
+        var skip = (pageNumber - 1) * pageSize;
+        var limit = 1;
+
+        query = query.Replace("<skip>",  $"SKIP  {skip}");
+        query = query.Replace("<limit>", $"LIMIT {pageSize}");
+
+        var jsonResult = await _grapthRepository.RunQueryAsync(query);
+        return Content(jsonResult, "application/json");
+
+        Response.AddPaginationHeader(new PaginationHeader(1, 11, 333, 33));
+
+
         return await QueryAndReturnJsonAsync(query);
     }
 
