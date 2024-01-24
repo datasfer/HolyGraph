@@ -5,6 +5,8 @@ import { environment } from 'src/environments/environment.development';
 import { getPaginatedResult, getPaginationHeaders } from './paginationHelper';
 import { map } from 'rxjs';
 import { BookParams } from '../_models/bookParams';
+import { VerseParams } from '../_models/verseParams';
+import { Verse } from '../_models/verse';
 
 @Injectable({
   providedIn: 'root'
@@ -38,7 +40,6 @@ export class BooksService {
     )
   }
 
-
   getTranslationBooks(translation: string) {
     return getPaginatedResult<Book[]>(this.baseUrl + 'translations/' + translation + "/books", new HttpParams(), this.http).pipe(
       map((response: any) => {
@@ -56,5 +57,4 @@ export class BooksService {
     this.bookParams = bookParams;
   }
 
-  
 }

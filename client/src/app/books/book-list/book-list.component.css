@@ -1,0 +1,22 @@
+div#main{
+    width:896px; 
+    margin:0 auto; 
+    text-align:justify; 
+    line-height:140%
+}
+h1 {font-style:normal; text-align:center; font-size:1.9em}
+strong {font-style:normal; font-size:x-large; font-weight:900}
+sup {font-style:normal; font-size:.7em}
+hr {border:1px solid black; margin:2em;}
+a {text-decoration:none}
+p{
+    margin-top: 0;
+    margin-bottom: 0.2rem;
+}
+ol{line-height:140%}
+
+li.left{
+ float:left;
+ width:47%;
+ margin-right:3%;
+}

@@ -11,14 +11,35 @@ namespace HolyGraph.API.Controllers;
 
 public class VersesController : BaseApiController
 {
+
+    private readonly IVerseRepository _verseRepository;
+
     private readonly INeo4jGraphRepository _grapthRepository;
     private readonly ILogger<VersesController> _logger;
 
-    public VersesController(INeo4jGraphRepository grapthRepository, ILogger<VersesController> logger)
+    public VersesController(INeo4jGraphRepository grapthRepository, IVerseRepository verseRepository, ILogger<VersesController> logger)
     {
+        _verseRepository = verseRepository;
         _grapthRepository = grapthRepository;     
         _logger = logger;           
     }
+
+
+
+    /// Verses
+    [HttpGet]
+    public async Task<IActionResult> getVerse([FromQuery] VerseParams verseParams)
+    {
+         Console.WriteLine("-----------------------------------");
+         var bs = await _verseRepository.GetVerseRangeAsync(verseParams);
+
+        Console.WriteLine(verseParams);
+        Response.AddPaginationHeader(new PaginationHeader(bs.CurrentPage, bs.PageSize, bs.TotalCount, bs.TotalPages));
+
+        return Ok(bs);
+    }
+
+
 
     /// Verses
     [HttpGet("{translation}/books/{book}/chapters/{chapter}/oneverse/{verseNum}/")]

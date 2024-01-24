@@ -15,7 +15,7 @@ public class BookDto
     public string translationId {get;set;}
     public string labels {get;set;}
     public string book {get;set;}
-    public string bookOrder {get;set;}
+    public int bookOrder {get;set;}
     public string osisref {get;set;}
     public string shortName {get;set;}
     public string title {get;set;}

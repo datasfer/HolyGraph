@@ -1,7 +1,7 @@
 export interface Book {
     book : string,
     bookID : string,
-    bookOrder : string,
+    bookOrder : number,
     chapters : string,
     labels : string,
     testament : string,
