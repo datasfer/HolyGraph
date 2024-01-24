@@ -8,6 +8,8 @@ public class BookParams : PaginationParams
      
     [JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
     public ScriptureEnum Scripture { get; set; } = ScriptureEnum.All;
+
+    public string Translation { get; set; } = string.Empty;
     public string OrderBy { get; set; } = "bookOrder";
 
     public override string ToString()

@@ -21,6 +21,7 @@ public static class ApplicationServiceExtensions
 
         services.AddSingleton<INeo4jGraphRepository, Neo4jGraphRepository>();
         services.AddSingleton<IBookRepository, BookRepository>();
+        services.AddSingleton<ITranslationRepository, TranslationRepository>();
    
         services.AddDbContext<DataContext>(opt =>
         {

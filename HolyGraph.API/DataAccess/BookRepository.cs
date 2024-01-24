@@ -1,5 +1,6 @@
 ﻿
 using HolyGraph.API.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 
 namespace HolyGraph.API;
 
@@ -27,10 +28,18 @@ public class BookRepository : IBookRepository
             where = $"WHERE b.Label = '{bookParams.Scripture}";
         }
 
+        if (!string.IsNullOrEmpty(bookParams.Translation))
+        {
+            where = $"WHERE t.id = '{bookParams.Translation}";
+        }
+
+
+
         var query =
-            @"
+            $@"
             MATCH(b:Book)
             MATCH(t:Translation)<-[r:CONTAINS]->(b)
+            {where}
             RETURN b,t.id as translationId 
             <skip> 
             <limit>;
@@ -50,4 +59,7 @@ public class BookRepository : IBookRepository
 
         return pagedList;
     }
+
+
+    
 }

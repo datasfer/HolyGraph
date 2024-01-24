@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Book } from '../_models/book';
 import { environment } from 'src/environments/environment.development';
@@ -12,7 +12,6 @@ import { BookParams } from '../_models/bookParams';
 export class BooksService {
 
   baseUrl = environment.apiUrl;
-  members: Book[] = [];
   memberCache = new Map();
   bookParams: BookParams | undefined;
   
@@ -23,6 +22,25 @@ export class BooksService {
   getBooks(bookParams: BookParams) {
     let params = getPaginationHeaders(bookParams.scripture, bookParams.pageNumber, bookParams.pageSize);
     return getPaginatedResult<Book[]>(this.baseUrl + 'books', params, this.http).pipe(
+      map((response: any) => {
+        console.log(response);
+        return response;
+      })
+    )
+  }
+
+  getTranslations() {
+    return getPaginatedResult<Book[]>(this.baseUrl + 'translations', new HttpParams(), this.http).pipe(
+      map((response: any) => {
+        console.log(response);
+        return response;
+      })
+    )
+  }
+
+
+  getTranslationBooks(translation: string) {
+    return getPaginatedResult<Book[]>(this.baseUrl + 'translations/' + translation + "/books", new HttpParams(), this.http).pipe(
       map((response: any) => {
         console.log(response);
         return response;

@@ -3,20 +3,34 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HolyGraph.API", "HolyGraph.API\HolyGraph.API.csproj", "{4ACEE46D-7B48-478C-813A-84868D435198}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HolyGraph.API", "HolyGraph.API\HolyGraph.API.csproj", "{4ACEE46D-7B48-478C-813A-84868D435198}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HolyGraph.GUI", "src\HolyGraph.GUI\HolyGraph.GUI.csproj", "{532B0CB1-166E-4A56-A7C5-409327CCA04F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{320E56ED-E29D-42ED-B52B-327C87F7EE16}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
-	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{4ACEE46D-7B48-478C-813A-84868D435198}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4ACEE46D-7B48-478C-813A-84868D435198}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4ACEE46D-7B48-478C-813A-84868D435198}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4ACEE46D-7B48-478C-813A-84868D435198}.Release|Any CPU.Build.0 = Release|Any CPU
+		{532B0CB1-166E-4A56-A7C5-409327CCA04F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{532B0CB1-166E-4A56-A7C5-409327CCA04F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{532B0CB1-166E-4A56-A7C5-409327CCA04F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{532B0CB1-166E-4A56-A7C5-409327CCA04F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{532B0CB1-166E-4A56-A7C5-409327CCA04F} = {320E56ED-E29D-42ED-B52B-327C87F7EE16}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7104991F-4069-43C2-B8F3-1D301DF47F41}
 	EndGlobalSection
 EndGlobal
