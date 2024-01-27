@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿#nullable disable warnings
+using Newtonsoft.Json;
 
 namespace HolyGraph.API;
 

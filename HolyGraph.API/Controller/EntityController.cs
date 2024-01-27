@@ -131,7 +131,7 @@ public class EntityController : BaseApiController
         catch (Exception ex)
         {
             // Log the exception
-            _logger.LogError(ex, @"Failed on when running query {query}");
+            _logger.LogError(ex, $"Failed on when running query {query}");
             Console.WriteLine($"Error: {ex.Message}");
             return StatusCode(500, "Internal Server Error");
         }

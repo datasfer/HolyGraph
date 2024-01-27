@@ -1,5 +1,6 @@
-<div class="text-center mt-3">
 
+<div class="text-center mt-3">
+   
     <select #ts [(ngModel)]="selectedTranslation" (change)="onTranslationChanged(ts.value)">
         <option *ngFor="let trans of translations"         
                  value={{trans.translationId}} [selected]="trans.translationId == 'v1805-T' ">
@@ -15,15 +16,31 @@
         <option *ngFor="let chapter of chapterNums" 
          value={{chapter}}>{{chapter}}</option>
     </select>
+    <button type="button" class="btn btn-primary"
+    [(ngModel)]="paginationMode" btnCheckbox
+    (click)="onBookChanged(bs.value)"
+    btnCheckboxTrue="Paginate" btnCheckboxFalse="NoPages">
+    {{paginationMode}}
+</button>
 
-    <select #vs (change)="onVerseChanged(vs.value)">
+<label>{{verseCount}}</label>
+
+
+
+    <!-- <select #vs (change)="onVerseChanged(vs.value)">
         <option *ngFor="let verse of verseNums" 
          value={{verse}}>{{verse}}</option>
-    </select>
+    </select> -->
 
     <div id="main">
         <p *ngFor="let verse of verses"><sup>{{verse.verse}}</sup> {{verse.verseText}} </p>
     </div>
+
+    <!-- <div id="main">
+        <p *ngFor="let group of sectionTitles">{{group}} 
+            <p *ngFor="let verse of groupedVerses[group]">{{verse]}} 
+        </p>
+    </div>  -->
 
 
     <div class="d-flex justify-content-center" *ngIf="versePagination">
@@ -32,7 +49,7 @@
             [totalItems]="versePagination.totalItems"
             [itemsPerPage]="versePagination.itemsPerPage"
             [(ngModel)]="versePagination.currentPage"
-            (pageChanged)="onVersePaginationChanged($event)"
+            (pageChanged)="onVersePaginationPageChanged($event)"
             [maxSize]="10"
             previousText="&lsaquo;" 
             nextText="&rsaquo;" 

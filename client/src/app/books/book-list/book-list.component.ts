@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { __core_private_testing_placeholder__ } from '@angular/core/testing';
 import { Book } from 'src/app/_models/book';
 import { BookParams } from 'src/app/_models/bookParams';
 import { Pagination } from 'src/app/_models/pagination';
@@ -17,6 +16,8 @@ import { VersesService } from 'src/app/_services/verses.service';
 export class BookListComponent implements OnInit{
   books: Book[] = [];
   verses: Verse[] = [];
+  groupedVerses: any[] = [];
+  sectionTitles: any[] = [];
   translationBooks: Book[] = [];
   translations: Translation[] = [];
   selectedBook : string = "Matthew";  
@@ -26,12 +27,15 @@ export class BookListComponent implements OnInit{
   chapterNums: number[] = [...Array(60).keys()].map(k => k+1);
   verseNums: number[] = [...Array(80).keys()].map(k => k+1);
 
+  verseCount:number = 0;
   
   pagination: Pagination | undefined;
   bookParams: BookParams | undefined;
 
   verseParams: VerseParams | undefined;
   versePagination: Pagination | undefined;
+
+  paginationMode = 'NoPages';
   
   constructor(private bookService: BooksService, private verseService: VersesService) {
     this.bookParams = this.bookService.getBookParams();
@@ -41,6 +45,7 @@ export class BookListComponent implements OnInit{
   ngOnInit(): void {
     this.loadBooks();
     this.loadTranslations();
+    this.onChapterChanged(this.selectedChapter.toString());
   }
 
   loadTranslations() {
@@ -104,9 +109,23 @@ export class BookListComponent implements OnInit{
         this.verseService.setVerseParams(verseParams);
         this.verseService.getVerses(verseParams).subscribe({
           next: response => {
-            console.log(response);
-            if (response.result && response.pagination) {
+            if (response.result ) {
               this.verses = this.orderBy(response.result, ['verse'], ["asc"]);
+              this.verseCount = this.verses.length;
+              this.groupedVerses = this.verses.reduce(
+                (result:any, currentValue:any) => { 
+                  (result[currentValue['sectionTitle']] = result[currentValue['sectionTitle']] || []).push(currentValue);
+                  return result;
+                }, {});
+
+                this.sectionTitles = Object.keys(this.groupedVerses);
+
+                console.log(this.groupedVerses);
+                Object.keys(this.groupedVerses).forEach((element: any) => {
+                     console.log(element);
+                     console.log(this.groupedVerses[element]);
+                   });
+
               this.versePagination = response.pagination;
             }
           }
@@ -143,6 +162,8 @@ export class BookListComponent implements OnInit{
    }
 
   onBookChanged(book: string){
+
+    console.log(this.paginationMode);
     console.log(book);
     console.log(this.selectedTranslation);
     var ps = new VerseParams();
@@ -152,12 +173,20 @@ export class BookListComponent implements OnInit{
     ps.chapter = this.selectedChapter;
     ps.verse = 1;
     ps.verseTo = 100;
-
+    ps.shouldPaginate = this.paginationMode == "NoPages" ? true : false;
+    console.log(ps);
     this.loadVerses(ps);
  }
 
  onChapterChanged(chapter: string){
   console.log(chapter);
+  console.log(this.verseParams);
+  if (this.verseParams) {
+    this.verseParams.pageNumber = 1;
+    this.verseParams.chapter = parseInt(chapter);
+    this.verseService.setVerseParams(this.verseParams);
+    this.loadVerses(this.verseParams);
+  }
 
 }
 
@@ -166,8 +195,15 @@ onVerseChanged(verse: string){
 }
 
 
-onVersePaginationChanged(verse: any){
-  console.log(verse);
+onVersePaginationPageChanged(event: any){
+  console.log(event);
+
+  if (this.verseParams && this.verseParams?.pageNumber !== event.page) {
+    this.verseParams.pageNumber = event.page;
+    this.verseService.setVerseParams(this.verseParams);
+    this.loadVerses(this.verseParams);
+  }
+
 }
 
 }

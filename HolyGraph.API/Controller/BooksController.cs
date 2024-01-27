@@ -12,13 +12,10 @@ public class BooksController : BaseApiController
         _bookRepository = bookRepository;
     }
 
-
     /// <summary>
-    /// Get scriptures
+    /// 
     /// </summary>
-    /// <param name="scripture">All, Bible, Narek</param>
-    /// <param name="pageNumber"></param>
-    /// <param name="pageSize"></param>
+    /// <param name="bookParams"></param>
     /// <returns></returns>
     // curl -X GET "http://195.201.22.161:33010/Scripture/books" -H "accept: */*"
     // curl -X GET "http://localhost:33010/Scripture/books" -H "accept: */*"

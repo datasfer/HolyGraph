@@ -1,3 +1,4 @@
+#nullable disable warnings
 namespace HolyGraph.API.DTOs;
 
 public class LoginDto

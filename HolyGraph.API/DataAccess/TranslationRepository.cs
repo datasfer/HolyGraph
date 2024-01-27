@@ -6,9 +6,7 @@ namespace HolyGraph.API;
 public class TranslationRepository : GraphRepositoryBase, ITranslationRepository
 {
 
-    public TranslationRepository(INeo4jGraphRepository neoGraph) : base(neoGraph)
-    {
-    }   
+    public TranslationRepository(INeo4jGraphRepository neoGraph) : base(neoGraph) {}
 
     public async Task<IEnumerable<TranslationDto>> GetTranslationsAsync()
     {

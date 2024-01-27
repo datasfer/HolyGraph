@@ -7,6 +7,8 @@ public class VerseParams : PaginationParams
 
     public int Chapter { get; set; } 
     public int Section { get; set; } 
+
+    public bool withSections { get; set; }  = false;
     
     /// <summary>
     /// verse from number

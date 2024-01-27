@@ -1,6 +1,9 @@
 export interface Verse{
-    id: string,
+    id: number,
     translationId: string,
+    bookTitle: string,
+    sectionTitle: string,
+    sectionID: string,
     book: string,
     chapter: number,
     section: number,

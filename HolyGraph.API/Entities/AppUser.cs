@@ -1,3 +1,4 @@
+#nullable disable warnings
 namespace HolyGraph.API.Entities;
 
 public class AppUser

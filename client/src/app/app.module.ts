@@ -11,6 +11,7 @@ import { BookListComponent } from './books/book-list/book-list.component';
 import { BookDetailComponent } from './books/book-detail/book-detail.component';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { FormsModule } from '@angular/forms';
+import { ButtonsModule } from 'ngx-bootstrap/buttons';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { FormsModule } from '@angular/forms';
     BsDropdownModule.forRoot(),
     HttpClientModule,
     PaginationModule.forRoot(),
-    FormsModule      
+    FormsModule,
+    ButtonsModule.forRoot()      
   ],
   providers: [],
   bootstrap: [AppComponent]

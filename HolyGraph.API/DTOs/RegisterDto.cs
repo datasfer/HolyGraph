@@ -1,3 +1,4 @@
+#nullable disable warnings
 using System.ComponentModel.DataAnnotations;
 
 namespace HolyGraph.API.DTOs;

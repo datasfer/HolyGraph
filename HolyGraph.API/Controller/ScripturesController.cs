@@ -26,7 +26,7 @@ public class ScripturesController : BaseApiController
     /// verse number of chapter of the book 
     /// </summary>
     /// <param name="translation"></param>
-    /// <param name="girq"></param>
+    /// <param name="book"></param>
     /// <param name="num"></param>
     /// <returns></returns>
     [HttpGet("{translation}/books/{book}/chapters/{num}/verses/count")]
@@ -45,6 +45,7 @@ public class ScripturesController : BaseApiController
     /// chapter number of the book
     /// </summary>
     /// <param name="book"></param>
+    /// <param name="translation"></param>
     /// <returns></returns>
     [HttpGet("{translation}/books/{book}/chapters/count")]
     public async Task<IActionResult> getBookChaptersCount(string translation, string book)
@@ -215,7 +216,7 @@ public class ScripturesController : BaseApiController
         catch (Exception ex)
         {
             // Log the exception
-            _logger.LogError(ex, @"Failed on when running query {query}");
+            _logger.LogError(ex, $"Failed on when running query {query}");
             Console.WriteLine($"Error: {ex.Message}");
             return StatusCode(500, "Internal Server Error");
         }

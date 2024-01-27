@@ -1,5 +1,6 @@
 ﻿
 using HolyGraph.API.Interfaces;
+using HolyGraph.API.Models;
 
 namespace HolyGraph.API;
 
@@ -10,6 +11,22 @@ public class VerseRepository : GraphRepositoryBase, IVerseRepository
     public async Task<VerseDto> GetVerseAsync(VerseParams verseParams)
     {
        throw new NotImplementedException();
+    }
+
+
+    public async Task<IEnumerable<VerseDto>> GetChapterVersesAsync(string translation, string book, int chapter)
+    {
+        var query = 
+            $@"
+            MATCH(t:Translation) where t.id = '{translation}' 
+            MATCH(t)-[rt:CONTAINS]->(n:Book) where n.book = '{book}'
+            MATCH (n)<-[r:CONTAINS]->(ch:Chapter)-[:CONTAINS]->(v:Verse) 
+            where ch.num = {chapter}
+            return v, t.id as translation, n.title as bookTitle order by v.verseOrder
+            ";
+
+        var verses = await _neoGraph.RunQueryAsync<VerseDto>(query);
+        return verses;
     }
 
     public async Task<PagedList<VerseDto>> GetVerseRangeAsync(VerseParams verseParams)
@@ -35,6 +52,72 @@ public class VerseRepository : GraphRepositoryBase, IVerseRepository
         MATCH (n)<-[r:CONTAINS]->(ch:Chapter)-[:CONTAINS]->(v:Verse) 
         WHERE ch.num = {verseParams.Chapter} and v.verse >= {verseParams.Verse} and v.verse <= {verseTo}
         RETURN v, t.id as translationId, n.title as bookTitle order by v.verseOrder
+        {skipQuery}
+        {limitQuery};
+        ";
+
+         Console.WriteLine($"{query}");
+        var verses = await _neoGraph.RunQueryAsync<VerseDto>(query);
+
+        return new PagedList<VerseDto>(verses, 222, verseParams.PageNumber, verseParams.PageSize);
+    }
+
+    public async Task<PagedList<VerseDto>> GetVersesAsync(VerseParams verseParams)
+    {
+        int verseTo = verseParams.VerseTo > 0 ? verseParams.VerseTo : verseParams.Verse;
+        var skip = (verseParams.PageNumber - 1) * verseParams.PageSize;
+
+        var skipQuery = string.Empty;
+        if(skip > 0)
+        {
+            skipQuery = $"SKIP  {skip}";
+        }
+        var limitQuery = string.Empty;
+        if(verseParams.PageSize > 0)
+        {
+            limitQuery = $"LIMIT {verseParams.PageSize}";
+        }
+
+         var query =
+        $@"
+        MATCH(t:Translation) where t.id = '{verseParams.Translation}' 
+        MATCH(t)-[rt:CONTAINS]->(n:Book) WHERE n.book = '{verseParams.Book}'
+        MATCH (n)<-[r:CONTAINS]->(ch:Chapter)-[:CONTAINS]->(v:Verse) 
+        WHERE ch.num = {verseParams.Chapter} 
+        RETURN v, t.id as translationId, n.title as bookTitle order by v.verseOrder
+        {skipQuery}
+        {limitQuery};
+        ";
+
+         Console.WriteLine($"{query}");
+        var verses = await _neoGraph.RunQueryAsync<VerseDto>(query);
+
+        return new PagedList<VerseDto>(verses, 164, verseParams.PageNumber, verseParams.PageSize);
+    }
+
+    public async Task<PagedList<VerseDto>> GetSectionedVersesAsync(VerseParams verseParams)
+    {
+        int verseTo = verseParams.VerseTo > 0 ? verseParams.VerseTo : verseParams.Verse;
+        var skip = (verseParams.PageNumber - 1) * verseParams.PageSize;
+
+        var skipQuery = string.Empty;
+        if(skip > 0)
+        {
+            skipQuery = $"SKIP  {skip}";
+        }
+        var limitQuery = string.Empty;
+        if(verseParams.PageSize > 0)
+        {
+            limitQuery = $"LIMIT {verseParams.PageSize}";
+        }
+
+         var query =
+        $@"
+        MATCH(t:Translation) where t.id = '{verseParams.Translation}' 
+        MATCH(t)-[rt:CONTAINS]->(n:Book) WHERE n.book = '{verseParams.Book}'
+        MATCH (n)<-[r:CONTAINS*2..2]->(s:Section)-[:CONTAINS]->(v:Verse) 
+        WHERE s.chapter = {verseParams.Chapter} 
+        RETURN v, t.id as translationId, n.title as bookTitle, s.sectionID as sectionID, s.title as sectionTitle order by v.section, v.verseOrder
         {skipQuery}
         {limitQuery};
         ";

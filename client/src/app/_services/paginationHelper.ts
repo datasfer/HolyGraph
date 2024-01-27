@@ -41,6 +41,7 @@ export function getPaginatedResult<T>(url: string, params: HttpParams, http: Htt
     params = params.append('verseTo', verseParams.verseTo);
     params = params.append('pageNumber', verseParams.pageNumber);
     params = params.append('pageSize', verseParams.pageSize);
+    params = params.append('withSections', verseParams.withSections);
 
     return params;
   }

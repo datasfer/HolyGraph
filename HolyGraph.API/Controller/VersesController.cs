@@ -26,17 +26,47 @@ public class VersesController : BaseApiController
 
 
 
-    /// Verses
+    /// <summary>
+    /// get paginated verses
+    /// </summary>
+    /// <param name="verseParams"></param>
+    /// <returns></returns>
     [HttpGet]
     public async Task<IActionResult> getVerse([FromQuery] VerseParams verseParams)
     {
          Console.WriteLine("-----------------------------------");
-         var bs = await _verseRepository.GetVerseRangeAsync(verseParams);
+
+        PagedList<VerseDto> bs;
+
+         if(verseParams.withSections)
+         {
+            bs = await _verseRepository.GetSectionedVersesAsync(verseParams);
+         }
+         else
+         {
+            bs = await _verseRepository.GetVersesAsync(verseParams);
+         }
 
         Console.WriteLine(verseParams);
         Response.AddPaginationHeader(new PaginationHeader(bs.CurrentPage, bs.PageSize, bs.TotalCount, bs.TotalPages));
 
         return Ok(bs);
+    }
+
+
+    /// <summary>
+    /// Get all verses of chapter
+    /// </summary>
+    /// <param name="translation"></param>
+    /// <param name="book"></param>
+    /// <param name="chapter"></param>
+    /// <returns></returns>
+    [HttpGet("{translation}/books/{book}/chapters/{chapter}")]
+    public async Task<IActionResult> getChapterVerses(string translation, string book, int chapter)
+    {
+        var vs = await _verseRepository.GetChapterVersesAsync(translation, book, chapter);
+
+        return Ok(vs);
     }
 
 
@@ -166,7 +196,7 @@ public class VersesController : BaseApiController
         catch (Exception ex)
         {
             // Log the exception
-            _logger.LogError(ex, @"Failed on when running query {query}");
+            _logger.LogError(ex, $"Failed on when running query {query}");
             Console.WriteLine($"Error: {ex.Message}");
             return StatusCode(500, "Internal Server Error");
         }
