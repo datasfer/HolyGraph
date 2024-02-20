@@ -32,7 +32,7 @@ public class VersesController : BaseApiController
     /// <param name="verseParams"></param>
     /// <returns></returns>
     [HttpGet]
-    public async Task<IActionResult> getVerse([FromQuery] VerseParams verseParams)
+    public async Task<ActionResult<PagedList<VerseDto>>> getVerse([FromQuery] VerseParams verseParams)
     {
          Console.WriteLine("-----------------------------------");
 

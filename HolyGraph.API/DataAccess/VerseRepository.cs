@@ -6,7 +6,7 @@ namespace HolyGraph.API;
 
 public class VerseRepository : GraphRepositoryBase, IVerseRepository
 {
-    public VerseRepository(INeo4jGraphRepository neoGraph) : base(neoGraph) {}
+    public VerseRepository(INeo4jGraphRepository neoGraph, AppState appState) : base(neoGraph, appState) {}
     
     public async Task<VerseDto> GetVerseAsync(VerseParams verseParams)
     {
@@ -31,7 +31,22 @@ public class VerseRepository : GraphRepositoryBase, IVerseRepository
 
     public async Task<PagedList<VerseDto>> GetVerseRangeAsync(VerseParams verseParams)
     {
-        int verseTo = verseParams.VerseTo > 0 ? verseParams.VerseTo : verseParams.Verse;
+        
+
+        var book = _appState
+                        .Books
+                        .Where(b => b.bookName.Equals(verseParams.Book, StringComparison.OrdinalIgnoreCase))
+                        .SingleOrDefault();
+
+        var chapter = book?.chapters[verseParams.Chapter];
+
+        int verseTo = verseParams.VerseTo > 0 ? verseParams.VerseTo : verseParams.Verse;;
+        if(chapter is not null)
+        {
+            verseTo = Math.Min(verseTo, chapter.verseCount);
+        }
+
+
         var skip = (verseParams.PageNumber - 1) * verseParams.PageSize;
 
         var skipQuery = string.Empty;
@@ -44,6 +59,8 @@ public class VerseRepository : GraphRepositoryBase, IVerseRepository
         {
             limitQuery = $"LIMIT {verseParams.PageSize}";
         }
+
+        
 
          var query =
         $@"
@@ -59,12 +76,11 @@ public class VerseRepository : GraphRepositoryBase, IVerseRepository
          Console.WriteLine($"{query}");
         var verses = await _neoGraph.RunQueryAsync<VerseDto>(query);
 
-        return new PagedList<VerseDto>(verses, 222, verseParams.PageNumber, verseParams.PageSize);
+        return new PagedList<VerseDto>(verses, chapter?.verseCount ?? 222, verseParams.PageNumber, verseParams.PageSize);
     }
 
     public async Task<PagedList<VerseDto>> GetVersesAsync(VerseParams verseParams)
     {
-        int verseTo = verseParams.VerseTo > 0 ? verseParams.VerseTo : verseParams.Verse;
         var skip = (verseParams.PageNumber - 1) * verseParams.PageSize;
 
         var skipQuery = string.Empty;
@@ -92,11 +108,20 @@ public class VerseRepository : GraphRepositoryBase, IVerseRepository
          Console.WriteLine($"{query}");
         var verses = await _neoGraph.RunQueryAsync<VerseDto>(query);
 
-        return new PagedList<VerseDto>(verses, 164, verseParams.PageNumber, verseParams.PageSize);
+
+        var book = _appState
+                        .Books
+                        .Where(b => b.bookName.Equals(verseParams.Book, StringComparison.OrdinalIgnoreCase))
+                        .SingleOrDefault();
+
+        var chapter = book?.chapters[verseParams.Chapter];
+
+        return new PagedList<VerseDto>(verses, chapter?.verseCount ?? 222, verseParams.PageNumber, verseParams.PageSize);
     }
 
     public async Task<PagedList<VerseDto>> GetSectionedVersesAsync(VerseParams verseParams)
     {
+        Console.WriteLine("GetSectionedVersesAsync");
         int verseTo = verseParams.VerseTo > 0 ? verseParams.VerseTo : verseParams.Verse;
         var skip = (verseParams.PageNumber - 1) * verseParams.PageSize;
 
@@ -125,6 +150,15 @@ public class VerseRepository : GraphRepositoryBase, IVerseRepository
          Console.WriteLine($"{query}");
         var verses = await _neoGraph.RunQueryAsync<VerseDto>(query);
 
-        return new PagedList<VerseDto>(verses, 164, verseParams.PageNumber, verseParams.PageSize);
+        var book = _appState
+                        .Books
+                        .Where(b => b.bookName.Equals(verseParams.Book, StringComparison.OrdinalIgnoreCase))
+                        .SingleOrDefault();
+
+        var chapter = book?.chapters[verseParams.Chapter];
+
+        Console.WriteLine(chapter);
+
+        return new PagedList<VerseDto>(verses, chapter?.verseCount ?? 164, verseParams.PageNumber, verseParams.PageSize);
     }
 }

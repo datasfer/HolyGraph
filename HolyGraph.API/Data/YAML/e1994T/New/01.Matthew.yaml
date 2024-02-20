@@ -1,16 +1,17 @@
-﻿bookName: Genesis
-osisName: Gen
+﻿bookName: Matthew
+osisName: Matt
 testament: New
 language: AM 
+translation: e1994-T
 dialect: Ashxarhabar 
-title: Աւետարան ըստ Մատթէոսի  
+title: ԱՒԵՏԱՐԱՆ ԸՍՏ ՄԱՏԹԷՈՍԻ
 bookDivision: Evangelie
 bookOrder: 1
 chapterCount: 28 
 verseCount: 1069 
 peopleCount: 1
 placeCount: 2
-#chapter:  [0,  1, 2,  3,  4,  5,   6, 7,  8,  9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28]
+#chapter:  [0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28]
 verses:    [0, 25, 23, 17, 25, 48, 34, 29, 34, 38, 42, 30, 50, 58, 36, 39, 28, 26, 35, 30, 33, 46, 46, 39, 51, 46, 75, 66, 20]
 abbreviations: [ՄԱՏԹԷՈՍ, Matt, Mateo, Mt]
 chapters:

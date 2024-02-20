@@ -7,10 +7,12 @@ namespace HolyGraph.API;
 public class BookRepository : IBookRepository
 {
     private readonly INeo4jGraphRepository _neoGraph;
+    private readonly AppState _appState;
 
-    public BookRepository(INeo4jGraphRepository neoGraph)
+    public BookRepository(INeo4jGraphRepository neoGraph, AppState appState)
     {
         _neoGraph = neoGraph;
+        _appState = appState;
     }   
     public Task<BookDto> GetBookAsync(string username)
     {
@@ -54,6 +56,13 @@ public class BookRepository : IBookRepository
 
         // var jsonResult = await _grapthRepository.RunQueryAsync(query);
         // return Content(jsonResult, "application/json");
+
+        //  var book = _appState
+        //                 .Books
+        //                 .Where(b => b.bookName.Equals(bookParams.book, StringComparison.OrdinalIgnoreCase))
+        //                 .SingleOrDefault();
+
+        // var chapter = book?.chapters[verseParams.Chapter];
 
         var pagedList = new PagedList<BookDto>(books, 164, bookParams.PageNumber, bookParams.PageSize);
 

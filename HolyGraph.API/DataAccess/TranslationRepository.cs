@@ -1,12 +1,13 @@
 ﻿
 using HolyGraph.API.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 
 namespace HolyGraph.API;
 
 public class TranslationRepository : GraphRepositoryBase, ITranslationRepository
 {
 
-    public TranslationRepository(INeo4jGraphRepository neoGraph) : base(neoGraph) {}
+    public TranslationRepository(INeo4jGraphRepository neoGraph, AppState appState) : base(neoGraph, appState) {}
 
     public async Task<IEnumerable<TranslationDto>> GetTranslationsAsync()
     {
@@ -17,8 +18,10 @@ public class TranslationRepository : GraphRepositoryBase, ITranslationRepository
         return await _neoGraph.RunQueryAsync<TranslationDto>(query);
     }
 
+    [HttpGet]
     public async Task<IEnumerable<BookDto>> GetTranslationBooksAsync(string translation)
     {
+        Console.WriteLine("GetTranslationBooksAsync------");
           var query =
             $@"
             MATCH(t:Translation)
@@ -27,7 +30,19 @@ public class TranslationRepository : GraphRepositoryBase, ITranslationRepository
             RETURN b,t.id as translationId;
             ";
 
-        return await _neoGraph.RunQueryAsync<BookDto>(query);
+        var bs = await _neoGraph.RunQueryAsync<BookDto>(query);
+
+        foreach(var book in _appState.Books)
+        {
+            Console.WriteLine(book.bookName);
+            BookDto b = bs.FirstOrDefault(x=>x.book == book.bookName);
+            if(b is not null)
+            {
+                b.chapterCount = Convert.ToInt32(book.chapterCount);
+            }
+        }
+
+        return bs;
     }
 
 }

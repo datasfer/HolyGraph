@@ -12,6 +12,15 @@ public class AppState
             .WithNamingConvention(new CamelCaseNamingConvention())
             .Build();
 
-        var book = deserializer.Deserialize<Book>(File.OpenText(@".\YAML\e1994T\new\01.Matthew.yaml"));
+        Books = 
+        [
+            deserializer.Deserialize<Book>(File.OpenText(@"./Data/YAML/e1994T/New/01.Matthew.yaml")),
+            deserializer.Deserialize<Book>(File.OpenText(@"./Data/YAML/e1994T/New/02.Mark.yaml")),
+           // deserializer.Deserialize<Book>(File.OpenText(@"./Data/YAML/e1994T/New/03.Luke.yaml")),
+           // deserializer.Deserialize<Book>(File.OpenText(@"./Data/YAML/e1994T/New/04.John.yaml")),
+            deserializer.Deserialize<Book>(File.OpenText(@"./Data/YAML/e1994T/New/05.Acts.yaml")),
+        ];
     }
+
+    public List<Book> Books {get; private set;}
 }

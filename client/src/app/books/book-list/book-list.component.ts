@@ -25,7 +25,7 @@ export class BookListComponent implements OnInit{
   selectedChapter : number = 1;
 
   chapterNums: number[] = [...Array(60).keys()].map(k => k+1);
-  verseNums: number[] = [...Array(80).keys()].map(k => k+1);
+  verseNums: number[] = []; //[...Array(80).keys()].map(k => k+1);
 
   verseCount:number = 0;
   
@@ -94,6 +94,8 @@ export class BookListComponent implements OnInit{
               //this.books = response.result.orderBy((a: { testament: any; })=>a.testament).orderBy ((x: { bookOrder: any; })=>x.bookOrder);
               this.books = this.orderBy(response.result, ['testament', 'bookOrder'], ["desc", "asc"]);
               this.pagination = response.pagination;
+
+              
               // this.books.forEach((element: any) => {
               //   console.log(element);
               // });
@@ -106,6 +108,7 @@ export class BookListComponent implements OnInit{
     loadVerses(verseParams: VerseParams) {
       if (verseParams) {
         this.verseParams = verseParams;
+        
         this.verseService.setVerseParams(verseParams);
         this.verseService.getVerses(verseParams).subscribe({
           next: response => {
@@ -127,6 +130,11 @@ export class BookListComponent implements OnInit{
                    });
 
               this.versePagination = response.pagination;
+
+              if(this.versePagination)
+              {
+                this.verseNums = [...Array(this.pagination?.totalItems).keys()].map(k => k+1);
+              }
             }
           }
         })
@@ -175,15 +183,20 @@ export class BookListComponent implements OnInit{
     ps.verseTo = 100;
     ps.shouldPaginate = this.paginationMode == "NoPages" ? true : false;
     console.log(ps);
+    //this.chapterNums = [...Array(this.pagination?.totalItems).keys()].map(k => k+1);
     this.loadVerses(ps);
  }
 
  onChapterChanged(chapter: string){
+  console.log("onChapterChanged");
   console.log(chapter);
   console.log(this.verseParams);
   if (this.verseParams) {
     this.verseParams.pageNumber = 1;
+    if(this.pagination) this.pagination.currentPage = 1;
+
     this.verseParams.chapter = parseInt(chapter);
+    console.log(this.verseParams);
     this.verseService.setVerseParams(this.verseParams);
     this.loadVerses(this.verseParams);
   }

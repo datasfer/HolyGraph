@@ -28,10 +28,6 @@
 </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Data/YAML/" />
-  </ItemGroup>
-
-  <ItemGroup>
   <None Update="Data/YAML/e1994T/New/01.Matthew.yaml">
     <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
   </None>

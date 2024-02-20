@@ -1,0 +1,22 @@
+bookName: Mark
+osisName: Mrk
+testament: New
+language: AM 
+translation: e1994-T
+dialect: Ashxarhabar 
+title: ԱՒԵՏԱՐԱՆ ԸՍՏ ՄԱՐԿՈՍԻ
+bookDivision: Evangelie
+bookOrder: 2
+chapterCount: 16 
+verseCount: 678 
+peopleCount: 1
+placeCount: 2
+#chapter:  [0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 16]
+verses:    [0, 45, 28, 35, 41, 43, 56, 37, 39, 49, 52, 33, 44, 37, 72, 47, 20]
+abbreviations: ["ՄԱՐԿՈՍ", "Mark", "Marcos", "Mc", "Mrk", "Mar", "Mk", "Mr",]
+chapters:
+    0: {}
+    1: 
+       verseCount: 25
+       sectionTitles: [ՅԻՍՈՒՍ ՔՐԻՍՏՈՍԻ ԱԶԳԱԲԱՆՈՒԹԻՒՆԸ, ՅԻՍՈՒՍԻ ԾՆՈՒՆԴԸ]
+       verseRanges:   [1-5, 5-10] 
