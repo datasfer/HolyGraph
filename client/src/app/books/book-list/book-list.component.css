@@ -4,6 +4,14 @@ div#main{
     text-align:justify; 
     line-height:140%
 }
+
+div.verse{
+    width:896px; 
+    margin:0 auto; 
+    text-align:justify; 
+    line-height:140%
+}
+
 h1 {font-style:normal; text-align:center; font-size:1.9em}
 strong {font-style:normal; font-size:x-large; font-weight:900}
 sup {font-style:normal; font-size:.7em}

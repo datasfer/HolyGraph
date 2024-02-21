@@ -17,10 +17,10 @@
          value={{chapter}}>{{chapter}}</option>
     </select>
     <button type="button" class="btn btn-primary"
-    [(ngModel)]="paginationMode" btnCheckbox
-    (click)="onBookChanged(bs.value)"
-    btnCheckboxTrue="Paginate" btnCheckboxFalse="NoPages">
-    {{paginationMode}}
+        [(ngModel)]="paginationMode" btnCheckbox
+        (click)="onBookChanged(bs.value)"
+        btnCheckboxTrue="Paginate" btnCheckboxFalse="NoPages">
+        {{paginationMode}}
 </button>
 
 <label>{{verseCount}}</label>
@@ -36,11 +36,29 @@
         <p *ngFor="let verse of verses"><sup>{{verse.verse}}</sup> {{verse.verseText}} </p>
     </div>
 
-    <!-- <div id="main">
-        <p *ngFor="let group of sectionTitles">{{group}} 
-            <p *ngFor="let verse of groupedVerses[group]">{{verse]}} 
-        </p>
-    </div>  -->
+    <!-- <p *ngFor="let group of sectionTitles">{{group}} 
+            {{groupedVerses[group]}} -->
+
+    <!-- this approach re-arrange sorted verse, and we get unordering between section, within section verse ordered -->
+    <!-- <div class="verse">
+            <ul>
+                <li *ngFor="let item of groupedVerses | keyvalue">
+                    <b>{{item.key}}</b> 
+                    <p *ngFor="let verse of item.value"><sup>{{verse.verse}}</sup> {{verse.verseText}} </p>
+                </li>
+            </ul> 
+    </div>   -->
+    
+    <!-- this approach keep verse order, WORKS!!! -->
+    <div class="verse" *ngFor='let key of objectKeys(groupedVerses)'>
+        <b>{{key}}</b> 
+        <p *ngFor='let verse of groupedVerses[key]'><sup>{{verse.verse}}</sup> {{verse.verseText}} </p>
+     </div>
+
+    <!-- <div id="groupedVerses">
+        
+        <p *ngFor="let verse of groupedVerses">{{verse}}         </p>
+    </div>   -->
 
 
     <div class="d-flex justify-content-center" *ngIf="versePagination">

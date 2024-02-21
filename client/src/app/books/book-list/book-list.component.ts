@@ -16,7 +16,7 @@ import { VersesService } from 'src/app/_services/verses.service';
 export class BookListComponent implements OnInit{
   books: Book[] = [];
   verses: Verse[] = [];
-  groupedVerses: any[] = [];
+  groupedVerses: { [key: string]: Verse[] } = {};
   sectionTitles: any[] = [];
   translationBooks: Book[] = [];
   translations: Translation[] = [];
@@ -62,7 +62,7 @@ export class BookListComponent implements OnInit{
         }
       })
   }
-
+  objectKeys = Object.keys;
 
 // https://decipher.dev/30-seconds-of-typescript/docs/orderBy/
   orderBy = <T = Object>(
@@ -122,12 +122,19 @@ export class BookListComponent implements OnInit{
                 }, {});
 
                 this.sectionTitles = Object.keys(this.groupedVerses);
+                this.sectionTitles.forEach(element => {
+                  console.log(element);
 
-                console.log(this.groupedVerses);
-                Object.keys(this.groupedVerses).forEach((element: any) => {
-                     console.log(element);
-                     console.log(this.groupedVerses[element]);
-                   });
+                  this.groupedVerses[element].forEach((verse: any) => {
+                    console.log(verse);
+                  });
+                });
+
+                //console.log(this.groupedVerses);
+                // Object.keys(this.groupedVerses).forEach((element: any) => {
+                //      console.log(element);
+                //      console.log(this.groupedVerses[element]);
+                //    });
 
               this.versePagination = response.pagination;
 
