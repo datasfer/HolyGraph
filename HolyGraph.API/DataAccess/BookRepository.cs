@@ -27,12 +27,12 @@ public class BookRepository : IBookRepository
         string where = string.Empty;
         if (bookParams.Scripture != ScriptureEnum.All)
         {
-            where = $"WHERE b.Label = '{bookParams.Scripture}";
+            where = $"WHERE b.Label = '{bookParams.Scripture}'";
         }
 
         if (!string.IsNullOrEmpty(bookParams.Translation))
         {
-            where = $"WHERE t.id = '{bookParams.Translation}";
+            where = $"WHERE t.id = '{bookParams.Translation}'";
         }
 
 
@@ -51,6 +51,8 @@ public class BookRepository : IBookRepository
 
         query = query.Replace("<skip>",  $"SKIP  {skip}");
         query = query.Replace("<limit>", $"LIMIT {bookParams.PageSize}");
+
+
 
         var books = await _neoGraph.RunQueryAsync<BookDto>(query);
 

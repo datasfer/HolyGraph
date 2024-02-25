@@ -32,7 +32,8 @@ public class VerseRepository : GraphRepositoryBase, IVerseRepository
     public async Task<PagedList<VerseDto>> GetVerseRangeAsync(VerseParams verseParams)
     {
         
-
+        Console.WriteLine("-----------------------------------");
+        Console.WriteLine("Repository Method: GetVerseRangeAsync");
         var book = _appState
                         .Books
                         .Where(b => b.bookName.Equals(verseParams.Book, StringComparison.OrdinalIgnoreCase))
@@ -73,7 +74,6 @@ public class VerseRepository : GraphRepositoryBase, IVerseRepository
         {limitQuery};
         ";
 
-         Console.WriteLine($"{query}");
         var verses = await _neoGraph.RunQueryAsync<VerseDto>(query);
 
         return new PagedList<VerseDto>(verses, chapter?.verseCount ?? 222, verseParams.PageNumber, verseParams.PageSize);
@@ -81,6 +81,9 @@ public class VerseRepository : GraphRepositoryBase, IVerseRepository
 
     public async Task<PagedList<VerseDto>> GetVersesAsync(VerseParams verseParams)
     {
+        Console.WriteLine("-----------------------------------");
+        Console.WriteLine("Repository Method: GetVersesAsync");
+
         var skip = (verseParams.PageNumber - 1) * verseParams.PageSize;
 
         var skipQuery = string.Empty;
@@ -100,12 +103,11 @@ public class VerseRepository : GraphRepositoryBase, IVerseRepository
         MATCH(t)-[rt:CONTAINS]->(n:Book) WHERE n.book = '{verseParams.Book}'
         MATCH (n)<-[r:CONTAINS]->(ch:Chapter)-[:CONTAINS]->(v:Verse) 
         WHERE ch.num = {verseParams.Chapter} 
-        RETURN v, t.id as translationId, n.title as bookTitle order by v.verseOrder
+        RETURN v, t.id as translationId, n.title as bookTitle order by v.verse, v.verseOrder
         {skipQuery}
         {limitQuery};
         ";
 
-         Console.WriteLine($"{query}");
         var verses = await _neoGraph.RunQueryAsync<VerseDto>(query);
 
 
@@ -121,7 +123,9 @@ public class VerseRepository : GraphRepositoryBase, IVerseRepository
 
     public async Task<PagedList<VerseDto>> GetSectionedVersesAsync(VerseParams verseParams)
     {
-        Console.WriteLine("GetSectionedVersesAsync");
+        Console.WriteLine("-----------------------------------");
+        Console.WriteLine("Repository Method: GetSectionedVersesAsync");
+
         int verseTo = verseParams.VerseTo > 0 ? verseParams.VerseTo : verseParams.Verse;
         var skip = (verseParams.PageNumber - 1) * verseParams.PageSize;
 
@@ -147,7 +151,6 @@ public class VerseRepository : GraphRepositoryBase, IVerseRepository
         {limitQuery};
         ";
 
-         Console.WriteLine($"{query}");
         var verses = await _neoGraph.RunQueryAsync<VerseDto>(query);
 
         var book = _appState

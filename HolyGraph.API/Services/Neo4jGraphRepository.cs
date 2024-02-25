@@ -27,6 +27,7 @@ namespace HolyGraph.API.Services;
 
      public async Task<IEnumerable<T>> RunQueryAsync<T>(string query)
      {
+         Console.WriteLine($"Request: {query}");
         var jsonResult = await GetResultAsync(query);
         var jsonify = JsonConvert.SerializeObject(jsonResult);
         return JsonConvert.DeserializeObject<IEnumerable<T>>(jsonify);

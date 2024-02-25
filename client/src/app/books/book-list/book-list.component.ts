@@ -138,7 +138,16 @@ export class BookListComponent implements OnInit{
                 //      console.log(this.groupedVerses[element]);
                 //    });
 
-              this.versePagination = response.pagination;
+              console.log(response.pagination);    
+              if(response.pagination.totalPages <= 1)
+              {
+                this.versePagination = undefined;
+              }
+              else
+              {
+                  this.versePagination = response.pagination;
+              }
+
 
               if(this.versePagination)
               {
@@ -232,13 +241,21 @@ onVersePaginationPageChanged(event: any){
 }
 
 onNext(){
-  this.selectedChapter++;
-  this.onChapterChanged();
+  if(this.selectedChapter < this.selectedBook.chapterCount)
+  {
+    console.log(`onNext: ${this.selectedChapter}`)
+    this.selectedChapter++;
+    this.onChapterChanged();
+  }
 }
 
 onPrev(){
-  this.selectedChapter--;
-  this.onChapterChanged();
+  if(this.selectedChapter > 1 )
+  {
+    console.log(`onPrev: ${this.selectedChapter}`)
+    this.selectedChapter--;
+    this.onChapterChanged();
+  }
 }
 
 }

@@ -34,7 +34,8 @@ public class VersesController : BaseApiController
     [HttpGet]
     public async Task<ActionResult<PagedList<VerseDto>>> getVerse([FromQuery] VerseParams verseParams)
     {
-         Console.WriteLine("-----------------------------------");
+        Console.WriteLine("-----------------------------------");
+        Console.WriteLine("Request method: getVerse");
 
         PagedList<VerseDto> bs;
 
@@ -75,6 +76,8 @@ public class VersesController : BaseApiController
     [HttpGet("{translation}/books/{book}/chapters/{chapter}/oneverse/{verseNum}/")]
     public async Task<IActionResult> getVerse(string translation, string book, int chapter, int verseNum)
     {
+         Console.WriteLine("-----------------------------------");
+        Console.WriteLine("Request: getVerse");
         var query = 
             $@"
             MATCH(t:Translation) where t.id = '{translation}' 
@@ -114,6 +117,8 @@ public class VersesController : BaseApiController
     [HttpGet("{translation}/books/{book}/chapters/{chapter}/sections/")]
     public async Task<IActionResult> getChapterTitles(string translation, string book, int chapter)
     {
+        Console.WriteLine("-----------------------------------");
+        Console.WriteLine("Request: getChapterTitles");
         var query = 
             $@"
             MATCH(t:Translation) where t.id = '{translation}' 
@@ -141,6 +146,8 @@ public class VersesController : BaseApiController
     [HttpGet("{translation}/books/{book}/chapters/{chapter}/sections/{secnum}")]
     public async Task<IActionResult> getChapterTitles(string translation, string book, int chapter, int secnum)
     {
+        Console.WriteLine("-----------------------------------");
+        Console.WriteLine("Request: getChapterTitles_2");
         var query = 
             $@"
             MATCH(t:Translation) where t.id = '{translation}'
@@ -158,6 +165,8 @@ public class VersesController : BaseApiController
     [HttpGet("{translation}/books/{book}/sections")]
     public async Task<IActionResult> getBookSections(string translation, string book)
     {
+        Console.WriteLine("-----------------------------------");
+        Console.WriteLine("Request: getBookSections");        
         var query = 
             $@"
             MATCH(t:Translation) where t.id = '{translation}'

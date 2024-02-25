@@ -3,12 +3,14 @@
    
     <!-- translations combobox -->
     <select #ts [(ngModel)]="selectedTranslation" (change)="onTranslationChanged()">
-        <option *ngFor="let trans of translations" [ngValue]='trans' [selected]="trans.translationId == 'v1805-T' ">
-            {{trans.translationId}}
+        <option *ngFor="let trans of translations" [ngValue]='trans' [selected]="trans.translationId == 'v1805-T' "
+                 title="{{trans.translationId}}" >
+            {{trans.name}}
         </option>
     </select>
 
-    <button style="margin-left: 10pt; margin-right: 10pt" (click)="onPrev()">prev</button>
+    <button [disabled]="(selectedChapter <= 1)"
+            style="margin-left: 10pt; margin-right: 10pt" (click)="onPrev()">prev</button>
 
     <!-- books combobox -->
     <select #bs [(ngModel)]="selectedBook" (change)="onBookChanged()">
@@ -28,7 +30,8 @@
         </option>
     </select>
 
-    <button style="margin-left: 10pt; margin-right: 10pt" (click)="onNext()">next</button>
+    <button [disabled]="(selectedChapter >= selectedBook.chapterCount)"
+            style="margin-left: 10pt; margin-right: 10pt" (click)="onNext()">next</button>
 
     <button type="button" class="btn btn-primary" [(ngModel)]="paginationMode" btnCheckbox
             (click)="onBookChanged()" btnCheckboxTrue="Paginate" btnCheckboxFalse="NoPages">
@@ -54,7 +57,7 @@
             {{groupedVerses[group]}} -->
 
     <!-- this approach re-arrange sorted verse, and we get unordering between section, within section verse ordered -->
-    <!-- <div class="verse">
+    <!-- <div class="verse">  
             <ul>
                 <li *ngFor="let item of groupedVerses | keyvalue">
                     <b>{{item.key}}</b> 
