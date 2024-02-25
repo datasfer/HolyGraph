@@ -1,39 +1,49 @@
 
-<div class="text-center mt-3">
+<div class="text-center mt-3 scripture-styles">
    
+    <!-- translations combobox -->
     <select #ts [(ngModel)]="selectedTranslation" (change)="onTranslationChanged(ts.value)">
-        <option *ngFor="let trans of translations"         
-                 value={{trans.translationId}} [selected]="trans.translationId == 'v1805-T' ">
-            {{trans.translationId}}</option>
+        <option *ngFor="let trans of translations" value={{trans.translationId}} [selected]="trans.translationId == 'v1805-T' ">
+            {{trans.translationId}}
+        </option>
     </select>
 
-    <select #bs [(ngModel)]="selectedBook" (change)="onBookChanged(bs.value)">
-        <option *ngFor="let book of translationBooks" 
-         value={{book.book}}>{{book.bookOrder}} - {{book.book}}</option>
+    <button style="margin-left: 10pt; margin-right: 10pt" (click)="onPrev()">prev</button>
+
+    <!-- books combobox -->
+    <select #bs [(ngModel)]="selectedBook" (change)="onBookChanged()">
+        <option *ngFor="let book of translationBooks" [ngValue]='book'>
+                {{book.bookOrder}} - {{book.book}} -{{book.chapterCount}} -({{book.verseCount}}) {{book.abbrebiations}}
+        </option>
     </select>
 
-    <select #ch [(ngModel)]="selectedChapter" (change)="onChapterChanged(ch.value)">
-        <option *ngFor="let chapter of chapterNums" 
-         value={{chapter}}>{{chapter}}</option>
+    <!-- <option *ngFor="let book of translationBooks" [ngValue]="book">
+        {{ book.book }}
+    </option> -->
+
+    <!-- chapters combbox -->
+    <select #ch [(ngModel)]="selectedChapter" (change)="onChapterChanged()">
+        <option *ngFor="let chapter of chapterNums" [ngValue]='chapter'>
+            {{chapter}}
+        </option>
     </select>
-    <button type="button" class="btn btn-primary"
-        [(ngModel)]="paginationMode" btnCheckbox
-        (click)="onBookChanged(bs.value)"
-        btnCheckboxTrue="Paginate" btnCheckboxFalse="NoPages">
-        {{paginationMode}}
+
+    <button style="margin-left: 10pt; margin-right: 10pt" (click)="onNext()">next</button>
+
+    <button type="button" class="btn btn-primary" [(ngModel)]="paginationMode" btnCheckbox
+            (click)="onBookChanged()" btnCheckboxTrue="Paginate" btnCheckboxFalse="NoPages">
+            {{paginationMode}}
 </button>
 
 <label>{{verseCount}}</label>
 
-
-
-    <!-- <select #vs (change)="onVerseChanged(vs.value)">
+<!-- <select #vs (change)="onVerseChanged(vs.value)">
         <option *ngFor="let verse of verseNums" 
          value={{verse}}>{{verse}}</option>
-    </select> -->
+</select> -->
 
     <div id="main">
-        <p *ngFor="let verse of verses"><sup>{{verse.verse}}</sup> {{verse.verseText}} </p>
+        <p *ngFor="let verse of verses"><sup class="v">{{verse.verse}}</sup> {{verse.verseText}} </p>
     </div>
 
     <!-- <p *ngFor="let group of sectionTitles">{{group}} 
@@ -52,14 +62,12 @@
     <!-- this approach keep verse order, WORKS!!! -->
     <div class="verse" *ngFor='let key of objectKeys(groupedVerses)'>
         <b>{{key}}</b> 
-        <p *ngFor='let verse of groupedVerses[key]'><sup>{{verse.verse}}</sup> {{verse.verseText}} </p>
+        <p *ngFor='let verse of groupedVerses[key]'><sup class="v">{{verse.verse}}</sup> {{verse.verseText}} </p>
      </div>
 
     <!-- <div id="groupedVerses">
-        
         <p *ngFor="let verse of groupedVerses">{{verse}}         </p>
     </div>   -->
-
 
     <div class="d-flex justify-content-center" *ngIf="versePagination">
         <pagination 

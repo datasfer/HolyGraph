@@ -155,10 +155,16 @@ public class VerseRepository : GraphRepositoryBase, IVerseRepository
                         .Where(b => b.bookName.Equals(verseParams.Book, StringComparison.OrdinalIgnoreCase))
                         .SingleOrDefault();
 
-        var chapter = book?.chapters[verseParams.Chapter];
+        Console.WriteLine(book);
+        
+        // this doesnot work, because in yaml missing this sections, this is huge work
+        //var chapter = book?.chapters[verseParams.Chapter];
+        
+        var chapterCount = book?.chapterCount ?? 33;
+        var verseCount = book?.verses[verseParams.Chapter] ?? 144; // chapter?.verseCount ?? 164
 
-        Console.WriteLine(chapter);
+        Console.WriteLine(chapterCount);
 
-        return new PagedList<VerseDto>(verses, chapter?.verseCount ?? 164, verseParams.PageNumber, verseParams.PageSize);
+        return new PagedList<VerseDto>(verses, verseCount, verseParams.PageNumber, verseParams.PageSize);
     }
 }

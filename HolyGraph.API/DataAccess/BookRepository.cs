@@ -63,8 +63,8 @@ public class BookRepository : IBookRepository
         //                 .SingleOrDefault();
 
         // var chapter = book?.chapters[verseParams.Chapter];
-
-        var pagedList = new PagedList<BookDto>(books, 164, bookParams.PageNumber, bookParams.PageSize);
+        
+        var pagedList = new PagedList<BookDto>(books, 133, bookParams.PageNumber, bookParams.PageSize);
 
         return pagedList;
     }

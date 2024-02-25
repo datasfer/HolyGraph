@@ -38,7 +38,9 @@ public class TranslationRepository : GraphRepositoryBase, ITranslationRepository
             BookDto b = bs.FirstOrDefault(x=>x.book == book.bookName);
             if(b is not null)
             {
-                b.chapterCount = Convert.ToInt32(book.chapterCount);
+                b.chapterCount = book.chapterCount;
+                b.verseCount = book.verseCount;
+                b.abbreviations = book.abbreviations;
             }
         }
 

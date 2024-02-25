@@ -20,7 +20,7 @@ export class BookListComponent implements OnInit{
   sectionTitles: any[] = [];
   translationBooks: Book[] = [];
   translations: Translation[] = [];
-  selectedBook : string = "Matthew";  
+  selectedBook : Book = { book: 'Matthew', bookID: '', bookOrder:1, chapterCount: 28, verseCount: 1069, abbrebiations: ['ՄԱՏԹԷՈՍ', 'Matt', 'Mateo', 'Mt'], labels: 'Matthew', testament: 'New', title: '', translationId: 'e1994-T'  };  
   selectedTranslation : string = "e1994-T";
   selectedChapter : number = 1;
 
@@ -45,7 +45,7 @@ export class BookListComponent implements OnInit{
   ngOnInit(): void {
     this.loadBooks();
     this.loadTranslations();
-    this.onChapterChanged(this.selectedChapter.toString());
+    this.onChapterChanged();
   }
 
   loadTranslations() {
@@ -91,6 +91,7 @@ export class BookListComponent implements OnInit{
           next: response => {
             console.log(response);
             if (response.result && response.pagination) {
+              
               //this.books = response.result.orderBy((a: { testament: any; })=>a.testament).orderBy ((x: { bookOrder: any; })=>x.bookOrder);
               this.books = this.orderBy(response.result, ['testament', 'bookOrder'], ["desc", "asc"]);
               this.pagination = response.pagination;
@@ -155,6 +156,7 @@ export class BookListComponent implements OnInit{
           console.log(response);
           if (response.result) {
             this.translationBooks = this.orderBy(response.result, ['testament', 'bookOrder'], ["asc", "asc"]);
+            this.selectedBook = this.translationBooks[0];
           }
         }
       })
@@ -176,33 +178,35 @@ export class BookListComponent implements OnInit{
       this.loadTranslationBooks(translation);
    }
 
-  onBookChanged(book: string){
-
+  onBookChanged(){
     console.log(this.paginationMode);
-    console.log(book);
+    console.log( JSON.stringify(this.selectedBook));
     console.log(this.selectedTranslation);
     var ps = new VerseParams();
 
+    this.selectedChapter = 1;
     ps.translation = this.selectedTranslation;
-    ps.book = this.selectedBook;
+    ps.book =this.selectedBook.book;
     ps.chapter = this.selectedChapter;
     ps.verse = 1;
     ps.verseTo = 100;
     ps.shouldPaginate = this.paginationMode == "NoPages" ? true : false;
     console.log(ps);
-    //this.chapterNums = [...Array(this.pagination?.totalItems).keys()].map(k => k+1);
+    var totalChapters = this.pagination?.totalItems;
+    console.log(totalChapters);
+    this.chapterNums = [...Array(this.selectedBook.chapterCount).keys()].map(k => k+1);
     this.loadVerses(ps);
  }
 
- onChapterChanged(chapter: string){
+ onChapterChanged(){
   console.log("onChapterChanged");
-  console.log(chapter);
+  console.log(`selectedChapter: ${this.selectedChapter}`);
   console.log(this.verseParams);
   if (this.verseParams) {
     this.verseParams.pageNumber = 1;
     if(this.pagination) this.pagination.currentPage = 1;
 
-    this.verseParams.chapter = parseInt(chapter);
+    this.verseParams.chapter = this.selectedChapter; //parseInt(chapter);
     console.log(this.verseParams);
     this.verseService.setVerseParams(this.verseParams);
     this.loadVerses(this.verseParams);
@@ -224,6 +228,16 @@ onVersePaginationPageChanged(event: any){
     this.loadVerses(this.verseParams);
   }
 
+}
+
+onNext(){
+  this.selectedChapter++;
+  this.onChapterChanged();
+}
+
+onPrev(){
+  this.selectedChapter--;
+  this.onChapterChanged();
 }
 
 }

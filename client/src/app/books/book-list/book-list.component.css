@@ -5,6 +5,15 @@ div#main{
     line-height:140%
 }
 
+.scripture-styles .v {
+    margin-right: 0.2em;
+    font-weight: 400;
+    font-family: "Marcellus",serif;
+    color: #097bc1;
+    letter-spacing: normal;
+    vertical-align: baseline;
+}
+
 div.verse{
     width:896px; 
     margin:0 auto; 

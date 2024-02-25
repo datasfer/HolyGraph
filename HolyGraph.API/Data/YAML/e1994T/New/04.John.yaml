@@ -1,0 +1,18 @@
+bookName: John
+osisName: Jn
+testament: New
+language: AM 
+translation: e1994-T
+dialect: Ashxarhabar 
+title: ԱՒԵՏԱՐԱՆ ԸՍՏ ՅՈՎՀԱՆՆԷՍԻ
+bookDivision: Evangelie
+bookOrder: 4
+chapterCount: 21 
+verseCount: 878 
+peopleCount: 1
+placeCount: 2
+#chapter:  [0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21]
+verses:    [0, 51, 25, 36, 54, 47, 72, 52, 59, 41, 42, 56, 50, 38, 31, 27, 33, 26, 40, 42, 31, 25]
+abbreviations: [ՅՈՎՀԱՆՆԷՍ, ՅՈՎՀ, Հովհաննես, Հովհ, John, Joh, Jhn, Jn]
+chapters:
+    0: {}

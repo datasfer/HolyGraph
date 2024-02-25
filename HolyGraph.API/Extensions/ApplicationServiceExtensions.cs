@@ -25,6 +25,9 @@ public static class ApplicationServiceExtensions
         services.AddSingleton<IBookRepository, BookRepository>();
         services.AddSingleton<ITranslationRepository, TranslationRepository>();
         services.AddSingleton<IVerseRepository, VerseRepository>();
+        services.AddSingleton<IArmatRepository, ArmatRepository>();
+        services.AddSingleton<ITokenRepository, TokenRepository>();
+        //services.AddSingleton<IWordRepository, WordRepository>();
    
         services.AddDbContext<DataContext>(opt =>
         {

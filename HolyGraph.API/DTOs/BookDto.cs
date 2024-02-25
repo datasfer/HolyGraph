@@ -23,5 +23,8 @@ public class BookDto
     public string testament {get;set;}
     public string slug {get;set;}
 
+    // data populated from yaml
     public int chapterCount {get;set;}
+    public int verseCount {get;set;}
+    public string[] abbreviations { get; set; }
 }

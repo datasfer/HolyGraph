@@ -1,7 +1,7 @@
 ﻿using HolyGraph.API.Controllers;
 using Microsoft.AspNetCore.Mvc;
 
-namespace HolyGraph.API;
+namespace HolyGraph.API.Controllers;
 
 public class BooksController : BaseApiController
 {
