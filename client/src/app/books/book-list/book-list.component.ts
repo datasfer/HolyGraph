@@ -21,7 +21,7 @@ export class BookListComponent implements OnInit{
   translationBooks: Book[] = [];
   translations: Translation[] = [];
   selectedBook : Book = { book: 'Matthew', bookID: '', bookOrder:1, chapterCount: 28, verseCount: 1069, abbrebiations: ['ՄԱՏԹԷՈՍ', 'Matt', 'Mateo', 'Mt'], labels: 'Matthew', testament: 'New', title: '', translationId: 'e1994-T'  };  
-  selectedTranslation : string = "e1994-T";
+  selectedTranslation : Translation = {translationId: "e1994-T", elementId: '', id:'', labels: '', dialect:'', translators:'', year:'', name:'', description:'', language:'', from:'', lang:'', version:''};
   selectedChapter : number = 1;
 
   chapterNums: number[] = [...Array(60).keys()].map(k => k+1);
@@ -54,7 +54,8 @@ export class BookListComponent implements OnInit{
           console.log(response);
           if (response.result) {
             this.translations = response.result;
-            this.loadTranslationBooks(this.selectedTranslation);
+            this.selectedTranslation = this.translations[0];
+            this.loadTranslationBooks(this.selectedTranslation.translationId);
              this.translations.forEach((element: any) => {
                console.log(element);
              });
@@ -172,10 +173,10 @@ export class BookListComponent implements OnInit{
     }
   }
 
-  onTranslationChanged(translation: string){
-      console.log(translation);
+  onTranslationChanged(){
       this.translationBooks = [];
-      this.loadTranslationBooks(translation);
+      this.loadTranslationBooks(this.selectedTranslation.translationId);
+      this.onBookChanged();
    }
 
   onBookChanged(){
@@ -185,7 +186,7 @@ export class BookListComponent implements OnInit{
     var ps = new VerseParams();
 
     this.selectedChapter = 1;
-    ps.translation = this.selectedTranslation;
+    ps.translation = this.selectedTranslation.translationId;
     ps.book =this.selectedBook.book;
     ps.chapter = this.selectedChapter;
     ps.verse = 1;

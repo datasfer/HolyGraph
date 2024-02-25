@@ -1,0 +1,7 @@
+<p>{{armat}} Tokens</p>
+
+<div *ngFor="let token of tokens">
+    - {{token.token}} ({{token.tags}}) 
+</div>
+
+<button type="button" (click)="goBack()">go back</button>
