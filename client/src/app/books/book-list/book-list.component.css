@@ -12,6 +12,8 @@ div#main{
     color: #097bc1;
     letter-spacing: normal;
     vertical-align: baseline;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
 }
 
 div.verse{

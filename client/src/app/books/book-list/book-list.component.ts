@@ -37,6 +37,9 @@ export class BookListComponent implements OnInit{
 
   paginationMode = 'NoPages';
   
+  
+  filter = { paginate: true, withSections: true, other: true };
+
   constructor(private bookService: BooksService, private verseService: VersesService) {
     this.bookParams = this.bookService.getBookParams();
     this.verseParams = this.verseService.getVerseParams();
@@ -107,7 +110,8 @@ export class BookListComponent implements OnInit{
       }
     }
 
-    loadVerses(verseParams: VerseParams) {
+    loadVerses(verseParams: VerseParams | undefined) {
+      console.log(`verse param: ${verseParams}`);
       if (verseParams) {
         this.verseParams = verseParams;
         
@@ -139,14 +143,16 @@ export class BookListComponent implements OnInit{
                 //    });
 
               console.log(response.pagination);    
-              if(response.pagination.totalPages <= 1)
-              {
-                this.versePagination = undefined;
-              }
-              else
-              {
-                  this.versePagination = response.pagination;
-              }
+              this.versePagination = response.pagination;
+
+              // if(response.pagination.totalPages <= 1)
+              // {
+              //   this.versePagination = undefined;
+              // }
+              // else
+              // {
+              //     this.versePagination = response.pagination;
+              // }
 
 
               if(this.versePagination)
@@ -193,14 +199,14 @@ export class BookListComponent implements OnInit{
     console.log( JSON.stringify(this.selectedBook));
     console.log(this.selectedTranslation);
     var ps = new VerseParams();
-
     this.selectedChapter = 1;
     ps.translation = this.selectedTranslation.translationId;
     ps.book =this.selectedBook.book;
     ps.chapter = this.selectedChapter;
     ps.verse = 1;
     ps.verseTo = 100;
-    ps.shouldPaginate = this.paginationMode == "NoPages" ? true : false;
+    ps.shouldPaginate = this.filter.paginate; //this.paginationMode == "NoPages" ? true : false;
+    ps.withSections = this.filter.withSections;
     console.log(ps);
     var totalChapters = this.pagination?.totalItems;
     console.log(totalChapters);
@@ -257,5 +263,18 @@ onPrev(){
     this.onChapterChanged();
   }
 }
+
+
+filterChange() {
+  let vp = this.verseService.getVerseParams();
+  if(vp)
+  {
+    vp.shouldPaginate = this.filter.paginate;
+    vp.withSections = this.filter.withSections;
+  }
+  console.log(`verse param: ${vp}`);
+  this.loadVerses(vp);
+}
+
 
 }

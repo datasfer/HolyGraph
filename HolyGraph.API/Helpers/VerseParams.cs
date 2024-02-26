@@ -9,6 +9,8 @@ public class VerseParams : PaginationParams
     public int Section { get; set; } 
 
     public bool withSections { get; set; }  = false;
+
+    public bool shouldPaginate { get; set; }  = false;
     
     /// <summary>
     /// verse from number
@@ -21,6 +23,6 @@ public class VerseParams : PaginationParams
 
     public override string ToString()
     {
-        return $"Translation: {Translation}, PageNumber: {PageNumber}, PageSize: {PageSize}";
+        return $"Translation: {Translation}, PageNumber: {PageNumber}, PageSize: {PageSize}, withSections: {withSections}, shouldPaginate: {shouldPaginate}";
     }
 }
