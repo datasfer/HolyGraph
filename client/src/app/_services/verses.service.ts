@@ -30,7 +30,9 @@ export class VersesService {
     else
     {
       let url = this.baseUrl + 'verses/' + verseParams.translation + '/books/' + verseParams.book + '/chapters/' + verseParams.chapter.toString();
-      res = getPaginatedResult<Verse[]>(url, new HttpParams(), this.http);
+      var p = new HttpParams();
+      p = p.append('withSections', verseParams.withSections);
+      res = getPaginatedResult<Verse[]>(url, p, this.http);
     }
     return res.pipe(
       map((response: any) => {

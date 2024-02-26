@@ -7,7 +7,7 @@ export class VerseParams {
     pageSize = 20;
     orderBy = 'lastActive';
     book = "Matthew";
-    withSections=false;
+    withSections=true;
     chapter = 1; 
     section = 1; 
     verse = 1;

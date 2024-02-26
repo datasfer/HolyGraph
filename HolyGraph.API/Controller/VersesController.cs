@@ -27,7 +27,7 @@ public class VersesController : BaseApiController
 
 
     /// <summary>
-    /// get paginated verses
+    /// Get paginated verses
     /// </summary>
     /// <param name="verseParams"></param>
     /// <returns></returns>
@@ -36,6 +36,7 @@ public class VersesController : BaseApiController
     {
         Console.WriteLine("-----------------------------------");
         Console.WriteLine("Request method: getVerse");
+        Console.WriteLine($"Verse params: {verseParams}");
 
         PagedList<VerseDto> bs;
 
@@ -63,10 +64,9 @@ public class VersesController : BaseApiController
     /// <param name="chapter"></param>
     /// <returns></returns>
     [HttpGet("{translation}/books/{book}/chapters/{chapter}")]
-    public async Task<IActionResult> getChapterVerses(string translation, string book, int chapter)
+    public async Task<IActionResult> getChapterVerses(string translation, string book, int chapter, bool withSections  = false)
     {
-        var vs = await _verseRepository.GetChapterVersesAsync(translation, book, chapter);
-
+        var vs = await _verseRepository.GetChapterVersesAsync(translation, book, chapter, withSections);
         return Ok(vs);
     }
 

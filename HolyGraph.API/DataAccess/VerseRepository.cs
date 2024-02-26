@@ -8,28 +8,42 @@ public class VerseRepository : GraphRepositoryBase, IVerseRepository
 {
     public VerseRepository(INeo4jGraphRepository neoGraph, AppState appState) : base(neoGraph, appState) {}
     
-    public async Task<VerseDto> GetVerseAsync(VerseParams verseParams)
+    public Task<VerseDto> GetVerseAsync(VerseParams verseParams)
     {
        throw new NotImplementedException();
     }
 
 
-    public async Task<IEnumerable<VerseDto>> GetChapterVersesAsync(string translation, string book, int chapter)
+    public async Task<IEnumerable<VerseDto>> GetChapterVersesAsync(string translation, string book, int chapter, bool withSections = false)
     {
+        var match = $"MATCH (n)<-[r:CONTAINS]->(ch:Chapter)-[:CONTAINS]->(v:Verse)";
+        var where = $"where ch.num = {chapter}";
+        var select = string.Empty;
+
+        if(withSections)
+        {
+            match = "MATCH (n)<-[r:CONTAINS*2..2]->(ch:Section)-[:CONTAINS]->(v:Verse)";
+            where = $"where ch.chapter = {chapter}";
+            select = ", ch.sectionID as sectionID, ch.title as sectionTitle ";
+        }
         var query = 
             $@"
             MATCH(t:Translation) where t.id = '{translation}' 
             MATCH(t)-[rt:CONTAINS]->(n:Book) where n.book = '{book}'
-            MATCH (n)<-[r:CONTAINS]->(ch:Chapter)-[:CONTAINS]->(v:Verse) 
-            where ch.num = {chapter}
-            return v, t.id as translation, n.title as bookTitle order by v.verseOrder
+            {match}
+            {where}
+            return v, t.id as translation, n.title as bookTitle {select} order by v.verseOrder
             ";
 
-        var verses = await _neoGraph.RunQueryAsync<VerseDto>(query);
-        return verses;
+        return await _neoGraph.RunQueryAsync<VerseDto>(query);
     }
 
-    public async Task<PagedList<VerseDto>> GetVerseRangeAsync(VerseParams verseParams)
+    /// <summary>
+    ///  get verse range of chapter, verFrom-verseTo
+    /// </summary>
+    /// <param name="verseParams"></param>
+    /// <returns></returns>
+    public async Task<IEnumerable<VerseDto>> GetVerseRangeAsync(VerseParams verseParams)
     {
         
         Console.WriteLine("-----------------------------------");
@@ -47,38 +61,24 @@ public class VerseRepository : GraphRepositoryBase, IVerseRepository
             verseTo = Math.Min(verseTo, chapter.verseCount);
         }
 
-
-        var skip = (verseParams.PageNumber - 1) * verseParams.PageSize;
-
-        var skipQuery = string.Empty;
-        if(skip > 0)
-        {
-            skipQuery = $"SKIP  {skip}";
-        }
-        var limitQuery = string.Empty;
-        if(verseParams.PageSize > 0)
-        {
-            limitQuery = $"LIMIT {verseParams.PageSize}";
-        }
-
-        
-
-         var query =
+        var query =
         $@"
         MATCH(t:Translation) where t.id = '{verseParams.Translation}' 
         MATCH(t)-[rt:CONTAINS]->(n:Book) WHERE n.book = '{verseParams.Book}'
         MATCH (n)<-[r:CONTAINS]->(ch:Chapter)-[:CONTAINS]->(v:Verse) 
         WHERE ch.num = {verseParams.Chapter} and v.verse >= {verseParams.Verse} and v.verse <= {verseTo}
         RETURN v, t.id as translationId, n.title as bookTitle order by v.verseOrder
-        {skipQuery}
-        {limitQuery};
         ";
 
-        var verses = await _neoGraph.RunQueryAsync<VerseDto>(query);
-
-        return new PagedList<VerseDto>(verses, chapter?.verseCount ?? 222, verseParams.PageNumber, verseParams.PageSize);
+        return await _neoGraph.RunQueryAsync<VerseDto>(query);
     }
 
+
+    /// <summary>
+    /// get all verses of chapters
+    /// </summary>
+    /// <param name="verseParams"></param>
+    /// <returns></returns>
     public async Task<PagedList<VerseDto>> GetVersesAsync(VerseParams verseParams)
     {
         Console.WriteLine("-----------------------------------");
@@ -97,7 +97,7 @@ public class VerseRepository : GraphRepositoryBase, IVerseRepository
             limitQuery = $"LIMIT {verseParams.PageSize}";
         }
 
-         var query =
+        var query =
         $@"
         MATCH(t:Translation) where t.id = '{verseParams.Translation}' 
         MATCH(t)-[rt:CONTAINS]->(n:Book) WHERE n.book = '{verseParams.Book}'
@@ -140,13 +140,13 @@ public class VerseRepository : GraphRepositoryBase, IVerseRepository
             limitQuery = $"LIMIT {verseParams.PageSize}";
         }
 
-         var query =
+        var query =
         $@"
         MATCH(t:Translation) where t.id = '{verseParams.Translation}' 
         MATCH(t)-[rt:CONTAINS]->(n:Book) WHERE n.book = '{verseParams.Book}'
-        MATCH (n)<-[r:CONTAINS*2..2]->(s:Section)-[:CONTAINS]->(v:Verse) 
-        WHERE s.chapter = {verseParams.Chapter} 
-        RETURN v, t.id as translationId, n.title as bookTitle, s.sectionID as sectionID, s.title as sectionTitle order by v.section, v.verseOrder
+        MATCH (n)<-[r:CONTAINS*2..2]->(ch:Section)-[:CONTAINS]->(v:Verse) 
+        WHERE ch.chapter = {verseParams.Chapter} 
+        RETURN v, t.id as translationId, n.title as bookTitle, ch.sectionID as sectionID, ch.title as sectionTitle order by v.section, v.verseOrder
         {skipQuery}
         {limitQuery};
         ";

@@ -27,8 +27,6 @@ export class BookListComponent implements OnInit{
   chapterNums: number[] = [...Array(60).keys()].map(k => k+1);
   verseNums: number[] = []; //[...Array(80).keys()].map(k => k+1);
 
-  verseCount:number = 0;
-  
   pagination: Pagination | undefined;
   bookParams: BookParams | undefined;
 
@@ -120,21 +118,21 @@ export class BookListComponent implements OnInit{
           next: response => {
             if (response.result ) {
               this.verses = this.orderBy(response.result, ['verse'], ["asc"]);
-              this.verseCount = this.verses.length;
               this.groupedVerses = this.verses.reduce(
                 (result:any, currentValue:any) => { 
                   (result[currentValue['sectionTitle']] = result[currentValue['sectionTitle']] || []).push(currentValue);
                   return result;
                 }, {});
 
-                this.sectionTitles = Object.keys(this.groupedVerses);
-                this.sectionTitles.forEach(element => {
-                  console.log(element);
+                // !!! FOR DEBUG
+                // this.sectionTitles = Object.keys(this.groupedVerses);
+                // this.sectionTitles.forEach(element => {
+                //   console.log(element);
 
-                  this.groupedVerses[element].forEach((verse: any) => {
-                    console.log(verse);
-                  });
-                });
+                //   this.groupedVerses[element].forEach((verse: any) => {
+                //     console.log(verse);
+                //   });
+                // });
 
                 //console.log(this.groupedVerses);
                 // Object.keys(this.groupedVerses).forEach((element: any) => {
@@ -195,9 +193,7 @@ export class BookListComponent implements OnInit{
    }
 
   onBookChanged(){
-    console.log(this.paginationMode);
-    console.log( JSON.stringify(this.selectedBook));
-    console.log(this.selectedTranslation);
+
     var ps = new VerseParams();
     this.selectedChapter = 1;
     ps.translation = this.selectedTranslation.translationId;
@@ -205,11 +201,12 @@ export class BookListComponent implements OnInit{
     ps.chapter = this.selectedChapter;
     ps.verse = 1;
     ps.verseTo = 100;
-    ps.shouldPaginate = this.filter.paginate; //this.paginationMode == "NoPages" ? true : false;
+    ps.shouldPaginate = this.filter.paginate;
     ps.withSections = this.filter.withSections;
-    console.log(ps);
+    console.log(`onBookPage ${ps}`);
     var totalChapters = this.pagination?.totalItems;
-    console.log(totalChapters);
+
+    
     this.chapterNums = [...Array(this.selectedBook.chapterCount).keys()].map(k => k+1);
     this.loadVerses(ps);
  }
@@ -218,11 +215,12 @@ export class BookListComponent implements OnInit{
   console.log("onChapterChanged");
   console.log(`selectedChapter: ${this.selectedChapter}`);
   console.log(this.verseParams);
+
   if (this.verseParams) {
     this.verseParams.pageNumber = 1;
     if(this.pagination) this.pagination.currentPage = 1;
 
-    this.verseParams.chapter = this.selectedChapter; //parseInt(chapter);
+    this.verseParams.chapter = this.selectedChapter; 
     console.log(this.verseParams);
     this.verseService.setVerseParams(this.verseParams);
     this.loadVerses(this.verseParams);

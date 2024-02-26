@@ -38,12 +38,10 @@
     <button [disabled]="(selectedChapter >= selectedBook.chapterCount)"
             style="margin-left: 10pt; margin-right: 10pt" (click)="onNext()">next</button>
 
-    <button type="button" class="btn btn-primary" [(ngModel)]="paginationMode" btnCheckbox
+    <!-- <button type="button" class="btn btn-primary" [(ngModel)]="paginationMode" btnCheckbox
             (click)="onBookChanged()" btnCheckboxTrue="Paginate" btnCheckboxFalse="NoPages">
             {{paginationMode}}
-</button>
-
-<label>{{verseCount}}</label>
+    </button> -->
 
     <!-- <div id="main">
         <p *ngFor="let verse of verses"><sup class="v">{{verse.verse}}</sup> {{verse.verseText}} </p>
