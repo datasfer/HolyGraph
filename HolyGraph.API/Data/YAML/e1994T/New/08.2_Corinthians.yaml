@@ -1,0 +1,18 @@
+bookName: Corinthians2
+osisName: 2Cori
+testament: New
+language: AM 
+translation: e1994-T
+dialect: Ashxarhabar 
+title: ՊՕՂՈՍ ԱՌԱՔԵԱԼԻ ԵՐԿՐՈՐԴ ԹՈՒՂԹԸ ԿՈՐՆԹԱՑԻՆԵՐԻՆ
+bookDivision: Evangelie
+bookOrder: 8
+chapterCount: 13
+verseCount: 255
+peopleCount: 1
+placeCount: 2
+#chapter:  [0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13]
+verses:    [0, 23, 17, 18, 18, 21, 18, 16, 24, 15, 18, 33, 21, 13]
+abbreviations: [2Կորնթացիներ, Կորնթացիներ2, ԲԿորնթացիներ,ԲԿորնթացիներին,ԿորնթացիներինԲ,ԿորնթացիներԲ,ԲԿր,Բ.Կր,ԿրԲ,Kor2,2Corie,Corinthians2,2 Cor,2 Co,II Cor,II Co,2Cor,2Co,II Corinthians,2Corinthians,2st Corinthians,Second Corinthians]
+chapters:
+    0: {}

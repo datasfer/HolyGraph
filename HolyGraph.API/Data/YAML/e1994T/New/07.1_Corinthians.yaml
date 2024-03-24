@@ -1,0 +1,18 @@
+bookName: Corinthians1
+osisName: 1Cori
+testament: New
+language: AM 
+translation: e1994-T
+dialect: Ashxarhabar 
+title: ՊՕՂՈՍ ԱՌԱՔԵԱԼԻ ԱՌԱՋԻՆ ԹՈՒՂԹԸ ԿՈՐՆԹԱՑԻՆԵՐԻՆ
+bookDivision: Evangelie
+bookOrder: 7
+chapterCount: 16
+verseCount: 437
+peopleCount: 1
+placeCount: 2
+#chapter:  [0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 16]
+verses:    [0, 31, 16, 23, 21, 13, 20, 40, 13, 27, 33, 34, 31, 13, 40, 58, 24]
+abbreviations: [1Կորնթացիներ, Կորնթացիներ1, ԱԿորնթացիներ,ԱԿորնթացիներին,ԿորնթացիներինԱ,ԿորնթացիներԱ,ԱԿր,Ա.Կր,ԿրԱ,Kor1,1Corie,Corinthians1,1 Cor,1 Co,I Cor,I Co,1Cor,1Co,I Corinthians,1Corinthians,1st Corinthians,First Corinthians]
+chapters:
+    0: {}
