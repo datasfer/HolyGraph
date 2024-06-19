@@ -30,7 +30,7 @@ public class ScripturesController : BaseApiController
     /// <param name="num"></param>
     /// <returns></returns>
     [HttpGet("{translation}/books/{book}/chapters/{num}/verses/count")]
-    public async Task<IActionResult> getBookChapterVerses(string translation, string book, int num)
+    public IActionResult getBookChapterVerses(string translation, string book, int num)
     {
         var query =
         $"MATCH(t:Translation) where t.id = '{translation}' " +
@@ -38,7 +38,8 @@ public class ScripturesController : BaseApiController
         $"WHERE v.chapter={num} " +
         $"return Max(v.verse) as num";
 
-        return await QueryAndReturnJsonAsync(query);
+        //return await QueryAndReturnJsonAsync(query);
+        return Content(100.ToString(), "application/json");
     }
 
     /// <summary>

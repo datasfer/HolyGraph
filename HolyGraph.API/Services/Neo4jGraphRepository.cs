@@ -80,7 +80,8 @@ namespace HolyGraph.API.Services;
         {
             return _driver.AsyncSession(options =>
             {
-                options.WithDatabase("bibles");
+                //TODO: get db name from config
+                options.WithDatabase("bibles01");
                 options.WithDefaultAccessMode(AccessMode.Read);
             });
         }

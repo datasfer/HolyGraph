@@ -99,6 +99,8 @@ public class VersesController : BaseApiController
         Console.WriteLine("Request: Verse Range enter");
         Console.WriteLine($"URL: scripture/{translation}/books/{book}/chapters/{chapter}/verses/{v1}? to={v2}");
 
+	// TODO: refactor this, read from metadata count of verses
+	if(v2 <= 0) v2 = 100;
         var query = 
             $@"
             MATCH(t:Translation) where t.id = '{translation}' 
