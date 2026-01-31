@@ -3,6 +3,8 @@
 ##
 ## Get latest from `dotnet new gitignore`
 
+elm-client/elm-stuff/*
+
 .mono/
 
 # dotenv files
